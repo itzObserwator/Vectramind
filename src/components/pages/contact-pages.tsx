@@ -1,0 +1,352 @@
+"use client";
+import Link from "next/link";
+import { useEffect, useState, type FormEvent } from "react";
+import { Arrow, Mark, SectionLabel } from "@/components/site-primitives";
+import { Button } from "@/components/ui/button";
+import { PageHero, FaqList } from "./page-primitives";
+import { products } from "@/content/products";
+import { offices } from "@/content/site";
+
+export function RequestForm({ support = false }: { support?: boolean }) {
+  const [topic, setTopic] = useState(support ? "support" : "general");
+  const [draft, setDraft] = useState<{ href: string; body: string } | null>(
+    null,
+  );
+  const [copied, setCopied] = useState(false);
+  useEffect(() => {
+    const incoming = new URLSearchParams(window.location.search).get("topic");
+    if (
+      incoming &&
+      [
+        "synapse",
+        "firstpass",
+        "careers",
+        "artificial-intelligence",
+        "solution-design",
+        "integration-services",
+      ].includes(incoming)
+    )
+      setTopic(incoming);
+  }, []);
+  function submit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const data = new FormData(event.currentTarget);
+    const body = `Name: ${data.get("name")}\nEmail: ${data.get("email")}\nOrganization: ${data.get("company") || "Not provided"}\nTopic: ${topic}\n\n${data.get("message")}`;
+    setDraft({
+      body,
+      href: `mailto:support@vectramind.com?subject=${encodeURIComponent(`Website enquiry — ${topic}`)}&body=${encodeURIComponent(body)}`,
+    });
+  }
+  return (
+    <div className="request-form-wrap">
+      {draft ? (
+        <div className="email-draft" role="status">
+          <Mark />
+          <span className="eyebrow">Ready for the next step</span>
+          <h3>Your email is ready.</h3>
+          <p>
+            Open your email app to review and send your enquiry to
+            support@vectramind.com.
+          </p>
+          <pre>{draft.body}</pre>
+          <div className="draft-actions">
+            <Button asChild>
+              <a href={draft.href}>
+                Open email app
+                <Arrow />
+              </a>
+            </Button>
+            <Button
+              variant="outline"
+              onClick={async () => {
+                try {
+                  await navigator.clipboard.writeText(draft.body);
+                  setCopied(true);
+                } catch {
+                  setCopied(false);
+                }
+              }}
+            >
+              {copied ? "Copied" : "Copy enquiry"}
+            </Button>
+          </div>
+          <button
+            className="draft-edit"
+            onClick={() => {
+              setDraft(null);
+              setCopied(false);
+            }}
+          >
+            Write another enquiry
+          </button>
+          <p className="form-note">
+            Your enquiry has not been sent. Send it from your email app to
+            complete your request.
+          </p>
+        </div>
+      ) : (
+        <form className="request-form" onSubmit={submit}>
+          <div className="form-heading">
+            <span className="eyebrow">
+              {support
+                ? "Tell us how we can help"
+                : "A conversation is a good beginning"}
+            </span>
+            <h2>
+              {support
+                ? "Let’s find a way forward."
+                : "What do you have in mind?"}
+            </h2>
+          </div>
+          <div className="form-fields">
+            <label>
+              Your name <span>*</span>
+              <input
+                name="name"
+                autoComplete="name"
+                required
+                placeholder="Full name"
+                maxLength={100}
+              />
+            </label>
+            <label>
+              Work email <span>*</span>
+              <input
+                name="email"
+                type="email"
+                autoComplete="email"
+                required
+                placeholder="you@company.com"
+                maxLength={180}
+              />
+            </label>
+            <label>
+              Organization
+              <input
+                name="company"
+                autoComplete="organization"
+                placeholder="Company or organization"
+                maxLength={150}
+              />
+            </label>
+            <label>
+              I’m interested in <span>*</span>
+              <select
+                name="topic"
+                value={topic}
+                onChange={(e) => setTopic(e.target.value)}
+              >
+                <option value="general">A conversation with Vectramind</option>
+                <option value="synapse">Synapse demo</option>
+                <option value="firstpass">Firstpass demo</option>
+                <option value="artificial-intelligence">
+                  Artificial intelligence
+                </option>
+                <option value="solution-design">
+                  Solution design & development
+                </option>
+                <option value="integration-services">
+                  Integration services
+                </option>
+                <option value="support">Product support</option>
+                <option value="careers">Careers</option>
+              </select>
+            </label>
+            <label className="form-full">
+              Your message <span>*</span>
+              <textarea
+                name="message"
+                required
+                minLength={10}
+                maxLength={4000}
+                rows={5}
+                placeholder={
+                  support
+                    ? "Tell us which product you use and what you need help with."
+                    : "Tell us about your goals, your team, or the challenge you’d like to solve."
+                }
+              />
+            </label>
+          </div>
+          <label className="form-consent">
+            <input type="checkbox" required />{" "}
+            <span>
+              I agree to the <Link href="/privacy-policy">privacy policy</Link>{" "}
+              and to being contacted about this enquiry.
+            </span>
+          </label>
+          <div className="form-submit">
+            <Button type="submit">
+              Prepare email
+              <Arrow />
+            </Button>
+            <p className="form-note">
+              Creates an email draft for you to review and send. This form does
+              not send messages automatically.
+            </p>
+          </div>
+        </form>
+      )}
+    </div>
+  );
+}
+export function ContactPage() {
+  return (
+    <div className="inner-page">
+      <PageHero
+        eyebrow="Contact Vectramind"
+        title={["Let’s connect.", "Then evolve."]}
+        description="A new platform. A complex challenge. An idea that deserves a conversation. Tell us what’s next for you."
+      />
+      <section className="contact-layout page-padding">
+        <aside>
+          <span className="eyebrow">With you in mind</span>
+          <h2>Good things start with a conversation.</h2>
+          <p>
+            Explore Synapse, Firstpass or a solution built around your
+            organization.
+          </p>
+          <a className="contact-email" href="mailto:support@vectramind.com">
+            support@vectramind.com
+            <Arrow />
+          </a>
+          <div className="contact-side-links">
+            <Link href="/synapse">
+              Customer engagement
+              <Arrow />
+            </Link>
+            <Link href="/firstpass">
+              Patient experience
+              <Arrow />
+            </Link>
+            <Link href="/support">
+              Need product support?
+              <Arrow />
+            </Link>
+          </div>
+        </aside>
+        <RequestForm />
+      </section>
+      <section
+        id="locations"
+        className="inner-section page-padding inner-panel"
+      >
+        <SectionLabel>Our world</SectionLabel>
+        <h2 className="display inner-section-title" data-reveal>
+          Closer than
+          <br />
+          you think.
+        </h2>
+        <div className="locations-grid">
+          {offices.map((office, i) => (
+            <a
+              key={office}
+              href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`Vectramind ${office}`)}`}
+              target="_blank"
+              rel="noreferrer"
+            >
+              <span className="eyebrow">0{i + 1} / Vectramind</span>
+              <h3>{office}</h3>
+              <span>
+                View on map
+                <Arrow />
+              </span>
+            </a>
+          ))}
+        </div>
+      </section>
+    </div>
+  );
+}
+const supportFaqs = [
+  ...products.synapse.faqs,
+  ...products.firstpass.faqs,
+  [
+    "How do I contact the support team?",
+    "Email support@vectramind.com or prepare an enquiry using the form below. Include your product, organization, a description of the issue and any relevant steps to reproduce it.",
+  ],
+  [
+    "What should I include in my support request?",
+    "Include the platform you use, a brief description of the issue, when it occurred, and the steps leading up to it. Avoid including patient records, passwords or other sensitive details.",
+  ],
+] as const;
+export function SupportPage() {
+  return (
+    <div className="inner-page">
+      <PageHero
+        eyebrow="Vectramind support"
+        title={["Need help?", "We’re with you."]}
+        description="Find answers, explore your platform, and connect with the people who can help you move forward."
+        cta="Contact support"
+        href="#support-request"
+      >
+        <div className="support-art">
+          <div className="support-ring" />
+          <Mark />
+          <span className="display">
+            Human.
+            <br />
+            Helpful.
+            <br />
+            <span>Connected.</span>
+          </span>
+        </div>
+      </PageHero>
+      <section className="support-quick-links page-padding">
+        {[
+          [
+            "Synapse",
+            "Customer engagement, messaging & integrations",
+            "/synapse",
+          ],
+          [
+            "Firstpass",
+            "Patient experience, flow & facility insights",
+            "/firstpass",
+          ],
+          [
+            "Our team",
+            "Talk through your question with us",
+            "#support-request",
+          ],
+        ].map(([title, text, href]) => (
+          <Link key={title} href={href}>
+            <span className="eyebrow">Explore</span>
+            <h2>{title}</h2>
+            <p>{text}</p>
+            <Arrow />
+          </Link>
+        ))}
+      </section>
+      <section className="inner-section page-padding">
+        <SectionLabel>A little more clarity</SectionLabel>
+        <div className="faq-layout">
+          <h2 className="display inner-section-title" data-reveal>
+            Answers that
+            <br />
+            move you forward.
+          </h2>
+          <FaqList items={supportFaqs} searchable />
+        </div>
+      </section>
+      <section
+        id="support-request"
+        className="contact-layout page-padding inner-panel"
+      >
+        <aside>
+          <span className="eyebrow">Expert help, human connection</span>
+          <h2>Tell us what’s happening.</h2>
+          <p>
+            Help our team understand your question so we can point you in the
+            right direction.
+          </p>
+          <a className="contact-email" href="mailto:support@vectramind.com">
+            support@vectramind.com
+            <Arrow />
+          </a>
+        </aside>
+        <RequestForm support />
+      </section>
+    </div>
+  );
+}

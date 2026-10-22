@@ -1,0 +1,478 @@
+/* Shared page gutters, editorial heading, numbered offices and a large dot globe. */
+.reference-reach {
+  --reach-gutter: clamp(24px, 5.5vw, 110px);
+  position: relative;
+  height: 180svh;
+  color: #292b30;
+  background: #fafafa;
+}
+.reach-sticky {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  height: 100svh;
+  min-height: 990px;
+  padding: 100px var(--reach-gutter) 80px;
+  display: grid;
+  grid-template-rows: auto auto minmax(430px, 1fr) auto;
+  gap: 22px;
+}
+.reach-section-label .section-label {
+  font-size: 10px;
+  text-transform: uppercase;
+}
+.reach-overview {
+  min-width: 0;
+}
+.reach-copy {
+  display: grid;
+  grid-template-columns: 1.15fr 1fr;
+  column-gap: clamp(40px, 6vw, 140px);
+  align-items: start;
+}
+.reach-copy h2 {
+  grid-row: 1 / 3;
+  font:
+    400 clamp(48px, 5.4vw, 88px)/1.02 Space,
+    Inter,
+    sans-serif;
+  letter-spacing: -0.06em;
+  margin: 0;
+}
+.reach-copy > p {
+  margin: 4px 0 0;
+  max-width: 490px;
+  font-size: 14px;
+  line-height: 1.85;
+}
+.reach-about-link {
+  grid-column: 2;
+  display: inline-flex;
+  align-items: center;
+  gap: 25px;
+  width: fit-content;
+  margin-top: 17px;
+  padding: 0 0 6px;
+  border-bottom: 1px solid #a5aab3;
+  font-size: 12px;
+}
+.reach-about-link:hover {
+  border-color: #292b30;
+}
+.reach-about-link svg {
+  width: 16px;
+  height: 16px;
+}
+.reach-stage {
+  display: grid;
+  grid-template-columns: minmax(260px, 0.6fr) minmax(0, 1.4fr);
+  gap: clamp(40px, 7vw, 150px);
+  min-height: 0;
+  align-items: center;
+}
+.reach-map-panel {
+  grid-column: 2;
+  grid-row: 1;
+  min-width: 0;
+  height: 100%;
+  min-height: 0;
+}
+.reach-globe-scene {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+.reach-globe-renderer,
+.reach-globe-fallback,
+.reach-location-callouts {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.reach-globe-renderer > div {
+  position: absolute !important;
+  inset: 0;
+}
+.reach-globe-renderer::before {
+  content: "";
+  position: absolute;
+  left: 24%;
+  width: 52%;
+  bottom: 0;
+  height: 18px;
+  background: radial-gradient(ellipse, #50596720, transparent 68%);
+}
+.reach-location-callouts {
+  overflow: visible;
+  pointer-events: none;
+}
+.reach-location-label rect {
+  fill: #fffffff5;
+  stroke: #d3d7de;
+  stroke-width: 0.8;
+}
+.reach-location-label text {
+  fill: #353b45;
+  font:
+    11px Inter,
+    sans-serif;
+}
+.reach-offices {
+  grid-column: 1;
+  grid-row: 1;
+  min-width: 0;
+  max-width: 460px;
+}
+.reach-eyebrow {
+  font:
+    500 9px/1.5 Inter,
+    sans-serif;
+  letter-spacing: 0.1em;
+  color: #69707b;
+}
+.reach-office-list {
+  margin-top: 15px;
+  border-top: 1px solid #dfe1e5;
+}
+.reach-office-list button {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  width: 100%;
+  min-height: 55px;
+  padding: 9px 12px 9px 0;
+  border: 0;
+  border-bottom: 1px solid #dfe1e5;
+  background: transparent;
+  color: #69707b;
+  text-align: left;
+  cursor: pointer;
+}
+.reach-office-number {
+  font:
+    10px/1.4 Inter,
+    sans-serif;
+  font-variant-numeric: tabular-nums;
+  opacity: 0.6;
+}
+.reach-office-name {
+  font:
+    400 19px/1.15 Space,
+    Inter,
+    sans-serif;
+  letter-spacing: -0.035em;
+}
+.reach-office-name small {
+  display: block;
+  margin-top: 4px;
+  font:
+    10px/1.3 Inter,
+    sans-serif;
+  letter-spacing: 0;
+  color: #777e89;
+}
+.reach-office-list button > svg {
+  width: 17px;
+  height: 17px;
+  margin-left: auto;
+  opacity: 0;
+}
+.reach-office-list button[aria-selected="true"] {
+  color: #292b30;
+  background: linear-gradient(90deg, #f0f1f400, #f0f1f4);
+  border-bottom-color: #626a76;
+}
+.reach-office-list button[aria-selected="true"] .reach-office-number {
+  color: #2873b9;
+  opacity: 1;
+}
+.reach-office-list button[aria-selected="true"] > svg {
+  opacity: 1;
+}
+.reach-office-list button:hover {
+  color: #292b30;
+  background: #f2f3f5;
+}
+.reach-office-detail {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  padding-top: 14px;
+}
+.reach-office-detail p {
+  font:
+    11px/1.5 Inter,
+    sans-serif;
+  color: #69717c;
+  margin: 0;
+}
+.reach-office-controls {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+.reach-office-controls > span {
+  font:
+    10px/1.5 Inter,
+    sans-serif;
+  font-variant-numeric: tabular-nums;
+  color: #747b86;
+  margin-right: 10px;
+}
+.reach-office-controls button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border: 1px solid #d9dde4;
+  border-radius: 50%;
+  background: transparent;
+  color: #353b45;
+  cursor: pointer;
+}
+.reach-office-controls button:hover {
+  background: #eef0f3;
+}
+.reach-arrow-previous {
+  transform: rotate(180deg);
+}
+.reach-statistics {
+  display: grid;
+  grid-template-columns: 1fr 3fr;
+  align-items: center;
+  gap: 28px;
+  padding-top: 18px;
+  border-top: 1px solid #dedfe3;
+}
+.reach-highlight {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  gap: 8px;
+  width: fit-content;
+}
+.reach-highlight strong {
+  font:
+    400 52px/1 Space,
+    Inter,
+    sans-serif;
+  letter-spacing: -0.06em;
+}
+.reach-highlight > span {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-size: 11px;
+}
+.reach-highlight svg {
+  width: 14px;
+  height: 14px;
+}
+.reach-metrics {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+}
+.reach-metric {
+  position: relative;
+  min-width: 0;
+  min-height: 90px;
+  text-align: center;
+  padding-top: 10px;
+}
+.reach-metric svg {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 116px;
+  height: 72px;
+  color: #9499a3;
+  pointer-events: none;
+}
+.reach-metric strong {
+  font:
+    400 31px/1.2 Space,
+    Inter,
+    sans-serif;
+  letter-spacing: -0.045em;
+}
+.reach-metric > span {
+  display: block;
+  max-width: 165px;
+  margin: 27px auto 0;
+  font-size: 9px;
+  line-height: 1.5;
+}
+@media (min-width: 901px) and (max-height: 850px) {
+  .reference-reach {
+    height: auto;
+  }
+  .reach-sticky {
+    position: relative;
+    height: auto;
+    min-height: 0;
+    padding-top: 100px;
+    grid-template-rows: auto auto 440px auto;
+    gap: 24px;
+  }
+  .reach-copy h2 {
+    font-size: clamp(44px, 4.6vw, 72px);
+  }
+  .reach-copy > p {
+    font-size: 13px;
+  }
+}
+@media (max-width: 1100px) and (min-width: 901px) {
+  .reach-stage {
+    grid-template-columns: minmax(250px, 0.7fr) minmax(0, 1.3fr);
+    gap: 32px;
+  }
+  .reach-copy {
+    column-gap: 40px;
+  }
+  .reach-office-list button {
+    gap: 14px;
+  }
+}
+@media (max-width: 900px) {
+  .reference-reach {
+    height: auto;
+  }
+  .reach-sticky {
+    position: relative;
+    height: auto;
+    min-height: 0;
+    padding-top: 65px;
+    padding-bottom: 65px;
+    grid-template-rows: auto auto auto auto;
+    gap: 32px;
+  }
+  .reach-copy h2 {
+    font-size: clamp(48px, 7vw, 70px);
+  }
+  .reach-copy {
+    gap: 0 30px;
+  }
+  .reach-copy > p {
+    font-size: 13px;
+  }
+  .reach-stage {
+    grid-template-columns: minmax(220px, 0.65fr) minmax(0, 1fr);
+    gap: 20px;
+  }
+  .reach-map-panel {
+    height: 420px;
+  }
+  .reach-office-list button {
+    gap: 12px;
+  }
+  .reach-office-name {
+    font-size: 17px;
+  }
+}
+@media (max-width: 600px) {
+  .reference-reach {
+    --reach-gutter: 22px;
+  }
+  .reach-sticky {
+    padding-top: 55px;
+    gap: 27px;
+  }
+  .reach-section-label .section-label {
+    font-size: 8px;
+  }
+  .reach-copy {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+  .reach-copy h2 {
+    grid-row: auto;
+    font-size: clamp(44px, 11vw, 64px);
+    margin-bottom: 22px;
+  }
+  .reach-copy > p {
+    font-size: 13px;
+  }
+  .reach-about-link {
+    grid-column: 1;
+  }
+  .reach-stage {
+    grid-template-columns: 1fr;
+    gap: 22px;
+  }
+  .reach-map-panel {
+    grid-column: 1;
+    grid-row: 1;
+    height: auto;
+  }
+  .reach-globe-scene {
+    aspect-ratio: 1;
+    height: auto;
+  }
+  .reach-offices {
+    grid-column: 1;
+    grid-row: 2;
+    width: 100%;
+    max-width: none;
+  }
+  .reach-office-list button {
+    min-height: 58px;
+    gap: 18px;
+  }
+  .reach-office-name {
+    font-size: 21px;
+  }
+  .reach-office-name small {
+    font-size: 10px;
+  }
+  .reach-office-detail {
+    gap: 10px;
+  }
+  .reach-office-controls {
+    gap: 5px;
+  }
+  .reach-office-controls > span {
+    margin-right: 2px;
+    font-size: 9px;
+  }
+  .reach-statistics {
+    grid-template-columns: 1fr;
+    gap: 25px;
+    padding-top: 22px;
+  }
+  .reach-highlight {
+    flex-direction: row;
+    align-items: center;
+    gap: 18px;
+  }
+  .reach-highlight strong {
+    font-size: 44px;
+  }
+  .reach-metrics {
+    gap: 10px;
+  }
+  .reach-metric svg {
+    width: 86px;
+    height: 60px;
+  }
+  .reach-metric strong {
+    font-size: 24px;
+  }
+  .reach-metric > span {
+    font-size: 8px;
+    margin-top: 25px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .reference-reach {
+    height: auto;
+  }
+  .reach-sticky {
+    position: relative;
+  }
+}

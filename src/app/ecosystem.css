@@ -1,0 +1,463 @@
+/* Reference 15.6–20.6s: logo → four platforms → eight channels → hold.
+   The HTML spheres and SVG rings share a 1000 × 650 coordinate system. */
+.orbital-ecosystem {
+  position: relative;
+  height: 260svh;
+  background: #fafafa;
+  color: #3a3a3a;
+}
+.ecosystem-sticky {
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  min-height: 560px;
+  overflow: hidden;
+  isolation: isolate;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(ellipse at 50% 65%, #eaeaea80, transparent 58%);
+}
+.ecosystem-heading {
+  position: absolute;
+  top: clamp(100px, 12vh, 145px);
+  width: 90%;
+  text-align: center;
+  z-index: 2;
+}
+.ecosystem-eyebrow {
+  display: block;
+  font-size: 9px;
+  color: #808080;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 15px;
+}
+.ecosystem-heading h2 {
+  font:
+    400 clamp(25px, 2.5vw, 40px)/1.12 Space,
+    Inter,
+    sans-serif;
+  letter-spacing: -0.045em;
+  margin: 0;
+}
+.orbital-ecosystem .ecosystem-diagram {
+  position: relative;
+  width: min(1500px, 108%, 138svh);
+  aspect-ratio: 1000 / 650;
+  flex: 0 0 auto;
+  margin-top: 100px;
+  container-type: inline-size;
+  z-index: 1;
+}
+.ecosystem-connections {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+.ecosystem-orbit-path,
+.ecosystem-bridge {
+  fill: none;
+  stroke: url(#ecosystem-ring);
+  stroke-width: 1.2;
+  stroke-dasharray: 1;
+}
+.ecosystem-halo {
+  fill: none;
+  stroke: #b3b3b3;
+  stroke-width: 1.25;
+  stroke-dasharray: 1;
+  filter: drop-shadow(0 0 3px #94949455);
+}
+.ecosystem-current {
+  fill: none;
+  stroke: #fefefa;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-dasharray: 0.025 0.975;
+  filter: drop-shadow(0 0 3px #a2a2a2);
+  animation: ecosystem-current 16s linear infinite;
+  animation-play-state: paused;
+}
+.ecosystem-ring-1 .ecosystem-current {
+  animation-duration: 24s;
+  animation-delay: -8s;
+}
+.orbital-ecosystem[data-visible="true"] .ecosystem-current {
+  animation-play-state: running;
+}
+@keyframes ecosystem-current {
+  to {
+    stroke-dashoffset: -1;
+  }
+}
+.orbital-ecosystem .ecosystem-hub {
+  position: absolute;
+  left: 50%;
+  top: 46.4%;
+  transform: translate(-50%, -50%);
+  width: 7%;
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #c7c9ce;
+  border-radius: 50%;
+  background:
+    radial-gradient(ellipse at 32% 14%, #fff 0%, #ffffffc7 14%, #ffffff00 47%),
+    radial-gradient(
+      circle at 38% 28%,
+      #f8f8fa 8%,
+      #e4e5e9 48%,
+      #bdc0c7 88%,
+      #d4d6dc 100%
+    );
+  box-shadow:
+    inset 1px 2px 3px #fff,
+    inset -3px -5px 9px #646a7526,
+    0 13px 16px -9px #646a7566;
+  isolation: isolate;
+  z-index: 345;
+}
+.ecosystem-hub .brand-mark {
+  width: 44%;
+  height: auto;
+  color: #318a3e;
+  display: block;
+}
+.ecosystem-hub .brand-mark svg {
+  width: 100%;
+  height: auto;
+}
+.ecosystem-hub .brand-mark path:first-child {
+  fill: #f2bb0b;
+}
+.ecosystem-hub .brand-mark path:nth-child(2) {
+  fill: #2873b9;
+}
+.ecosystem-hub .brand-mark path:last-child {
+  fill: #e83635;
+}
+.orbital-ecosystem .ecosystem-node {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 8.7%;
+  aspect-ratio: 1;
+  padding: 0;
+  background: transparent;
+  border: 0;
+  border-radius: 50%;
+  color: #535353;
+  -webkit-tap-highlight-color: transparent;
+}
+.ecosystem-sphere {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  transform: translateY(-40%);
+  width: 52%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  border: 1px solid #c9c9c9;
+  background:
+    radial-gradient(ellipse at 35% 9%, #fff 0%, #ffffffd9 9%, #ffffff00 39%),
+    radial-gradient(ellipse at 75% 93%, #ffffffb3 0%, #ffffff00 35%),
+    radial-gradient(
+      circle at 38% 28%,
+      #f3f3f3 6%,
+      #e0e0e0 38%,
+      #b0b0b0 83%,
+      #c1c1c1 100%
+    );
+  box-shadow:
+    inset -3px -6px 9px #5e5e5e28,
+    inset 1px 2px 2px #fff,
+    0 12px 13px -8px #7a7a7a4d;
+  transition:
+    box-shadow 0.3s,
+    border-color 0.3s;
+}
+.ecosystem-sphere > span {
+  position: relative;
+  text-align: center;
+  max-width: 91%;
+  font-size: clamp(8px, 0.83cqw, 12px);
+  line-height: 1.2;
+  font-weight: 500;
+  letter-spacing: -0.025em;
+  text-shadow: 0 1px 0 #ffffff90;
+}
+.ecosystem-color-blue {
+  --node-accent: #2873b9;
+}
+.ecosystem-color-green {
+  --node-accent: #318a3e;
+}
+.ecosystem-color-red {
+  --node-accent: #e83635;
+}
+.ecosystem-color-yellow {
+  --node-accent: #b99115;
+}
+.ecosystem-node .ecosystem-sphere::after {
+  content: "";
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--node-accent);
+  bottom: 12%;
+  opacity: 0.7;
+}
+.ecosystem-node[aria-pressed="true"] .ecosystem-sphere {
+  border-color: var(--node-accent);
+  box-shadow:
+    inset 0 1px 3px #fff,
+    0 0 19px #a7a7a755,
+    0 12px 13px -8px #7a7a7a4d;
+}
+.orbital-ecosystem .ecosystem-detail {
+  position: absolute;
+  z-index: 600;
+  transform: translate(14px, 12px);
+  width: 190px;
+  padding: 16px 18px;
+  border: 1px solid #d9d9d9;
+  border-radius: 9px;
+  background: #f8f8f8c9;
+  box-shadow: 0 12px 35px #70707012;
+  pointer-events: none;
+  backdrop-filter: blur(10px);
+}
+.ecosystem-detail[data-side="left"] {
+  transform: translate(calc(-100% - 14px), 12px);
+}
+.ecosystem-detail > span {
+  font-size: 11px;
+  font-weight: 500;
+}
+.ecosystem-detail p {
+  font-size: 11px;
+  line-height: 1.65;
+  margin: 8px 0 0;
+  color: #717171;
+}
+.ecosystem-mist {
+  position: absolute;
+  inset: 35% -15% -20%;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse at 20% 70%, #e5e5e5b0, transparent 35%),
+    radial-gradient(ellipse at 82% 50%, #e7e7e7a6, transparent 38%),
+    linear-gradient(0deg, #fafafa 10%, #fafafa00 70%);
+  opacity: 0.7;
+  z-index: 0;
+}
+.ecosystem-caption {
+  position: absolute;
+  z-index: 3;
+  bottom: 40px;
+  left: 5%;
+  right: 5%;
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 30px;
+}
+.ecosystem-caption p {
+  font-size: 11px;
+  line-height: 1.8;
+  color: #7d7d7d;
+  max-width: 350px;
+  margin: 0;
+}
+.ecosystem-caption .text-link {
+  font-size: 12px;
+  white-space: nowrap;
+}
+@media (max-width: 900px) {
+  .orbital-ecosystem {
+    height: auto;
+  }
+  .ecosystem-sticky {
+    position: relative;
+    min-height: 780px;
+    height: auto;
+    display: block;
+    padding: 80px 0 40px;
+  }
+  .ecosystem-heading {
+    position: relative;
+    top: auto;
+    margin: 0 auto;
+  }
+  .ecosystem-heading h2 {
+    max-width: 400px;
+    margin: 0 auto;
+    font-size: 32px;
+  }
+  .orbital-ecosystem .ecosystem-diagram {
+    width: 100%;
+    max-height: none;
+    margin: 15px auto;
+  }
+  .ecosystem-caption {
+    position: relative;
+    left: auto;
+    right: auto;
+    bottom: auto;
+    margin: 0 7%;
+  }
+  .orbital-ecosystem .ecosystem-detail {
+    width: 180px;
+  }
+}
+@media (max-width: 600px) {
+  .ecosystem-sticky {
+    min-height: 0;
+    padding-top: 55px;
+    padding-bottom: 45px;
+  }
+  .ecosystem-heading h2 {
+    font-size: 29px;
+    max-width: 310px;
+  }
+  .ecosystem-eyebrow {
+    font-size: 8px;
+  }
+  /* Diagram geometry is unchanged; larger hit areas surround each small orb. */
+  .orbital-ecosystem .ecosystem-diagram {
+    width: 150%;
+    max-width: none;
+    margin: 20px -25% 30px;
+  }
+  .ecosystem-sphere > span {
+    font-size: clamp(7px, 1.45cqw, 9px);
+  }
+  .ecosystem-sphere {
+    width: 66%;
+  }
+  .ecosystem-node .ecosystem-sphere::after {
+    width: 3px;
+    height: 3px;
+    bottom: 7%;
+  }
+  .orbital-ecosystem .ecosystem-detail {
+    left: 50% !important;
+    top: auto !important;
+    bottom: -65px;
+    transform: translateX(-50%);
+    width: 190px;
+  }
+  .ecosystem-caption {
+    flex-direction: column;
+    align-items: start;
+    gap: 20px;
+  }
+  .ecosystem-caption p {
+    max-width: 320px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .orbital-ecosystem {
+    height: auto;
+  }
+  .ecosystem-sticky {
+    position: relative;
+  }
+  .ecosystem-current {
+    animation: none;
+  }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .ecosystem-mist::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse at 25% 60%, #e1e1e155, transparent 34%),
+      radial-gradient(ellipse at 68% 35%, #efefefb3, transparent 32%);
+    animation: ecosystem-haze 18s ease-in-out infinite alternate;
+    animation-play-state: paused;
+  }
+  .orbital-ecosystem[data-visible="true"] .ecosystem-mist::before {
+    animation-play-state: running;
+  }
+}
+@keyframes ecosystem-haze {
+  from {
+    transform: translate(-4%, 3%);
+  }
+  to {
+    transform: translate(4%, -3%);
+  }
+}
+
+.ecosystem-base-trace {
+  fill: none;
+  stroke-linecap: round;
+}
+.ecosystem-atmosphere {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+  pointer-events: none;
+  opacity: 0.55;
+}
+.ecosystem-cloud-drift {
+  animation: ecosystem-cloud-drift 28s ease-in-out infinite alternate;
+  animation-play-state: paused;
+}
+.orbital-ecosystem[data-visible="true"] .ecosystem-cloud-drift {
+  animation-play-state: running;
+}
+@keyframes ecosystem-cloud-drift {
+  from {
+    transform: translate(-35px, 20px);
+  }
+  to {
+    transform: translate(45px, -30px);
+  }
+}
+@media (max-width: 600px) {
+  .orbital-ecosystem .ecosystem-detail[data-side="left"] {
+    transform: translateX(-50%);
+  }
+  .ecosystem-diagram:has(.ecosystem-detail) {
+    margin-bottom: 105px;
+  }
+  .ecosystem-atmosphere {
+    opacity: 0.23;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ecosystem-cloud-drift {
+    animation: none;
+  }
+}
+
+/* The central pearl uses the same curved surface as the surrounding nodes.
+   Its fine inset rim frames the full-colour mark without a separate side wall. */
+.ecosystem-hub::after {
+  content: "";
+  position: absolute;
+  inset: 5%;
+  border: 1px solid #ffffff80;
+  border-radius: inherit;
+  pointer-events: none;
+}
+.ecosystem-node:focus-visible {
+  outline: none;
+}
+.ecosystem-node:focus-visible .ecosystem-sphere {
+  outline: 2px solid var(--node-accent);
+  outline-offset: 3px;
+}

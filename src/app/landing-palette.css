@@ -1,0 +1,251 @@
+/* One landing-page palette. Product logos, photographs and logo-colour pulses
+   retain their own colours; inner pages keep their existing theme. */
+body:has(.experience-home) {
+  --background: #fafafa;
+  --foreground: #292b30;
+  --muted: #62656b;
+  --line: #dedfe2;
+  --panel: #f0f0f2;
+  --blue: #3c4148; /* Compatibility token for shared links and controls. */
+  --landing-paper: #fafafa;
+  --landing-ink: #292b30;
+  --landing-muted: #62656b;
+  --landing-surface: #f0f0f2;
+  --landing-accent: #3c4148;
+  color: var(--foreground);
+  background: var(--background);
+}
+body:has(.experience-home) ::selection {
+  color: #292b30;
+  background: #e6e8ed;
+}
+body:has(.experience-home) .button-primary {
+  color: #fff;
+  background: var(--landing-ink);
+}
+body:has(.experience-home) .button-primary:hover {
+  background: #454951;
+}
+body:has(.experience-home) :is(.header-home, .cookie-notice) {
+  color: var(--landing-ink);
+  border-color: var(--line);
+}
+body:has(.experience-home) .footer {
+  background: var(--landing-surface);
+}
+body:has(.experience-home) .footer-signal {
+  filter: grayscale(1);
+  opacity: 0.24;
+}
+body:has(.experience-home) .footer-wordmark {
+  color: #c5c6ca;
+}
+.experience-home {
+  color: var(--landing-ink);
+  background: var(--landing-paper);
+}
+.experience-home
+  :is(
+    .reference-capabilities,
+    .orbital-ecosystem,
+    .reference-reach,
+    .reference-platforms
+  ) {
+  color: var(--landing-ink);
+}
+.experience-home
+  :is(.platform-section, .client-strip, .clients-section, .people) {
+  background: var(--landing-paper);
+  border-color: var(--line);
+}
+.experience-home .case-studies {
+  background: var(--landing-surface);
+}
+.experience-home .story {
+  background: #f5f5f5;
+}
+.experience-home .story:nth-child(2) {
+  background: #f0f0f2;
+}
+.experience-home .story:nth-child(3) {
+  background: #ebebee;
+}
+.experience-home
+  :is(
+    .case-summary > strong,
+    .numbers-grid strong,
+    .benefit-intro .brand-mark
+  ) {
+  color: var(--landing-ink);
+}
+.experience-home :is(.case-story > .brand-mark, .story-mark) {
+  color: #a5a7ad;
+}
+.experience-home .client-logo-badge {
+  background: #fff;
+  border-color: var(--line);
+}
+.experience-home
+  :is(
+    .client-strip > p,
+    .client-heading p,
+    .experience-heading > span:last-child,
+    .experience-intro-label,
+    .experience-intro-bottom p,
+    .experience-capability-text,
+    .experience-capability-copy .experience-kicker,
+    .ecosystem-eyebrow,
+    .reach-copy p,
+    .reach-statement > span,
+    .reach-highlight > span,
+    .reach-office-intro,
+    .reach-offices ul,
+    .reach-metric > span,
+    .platform-card-description,
+    .platform-card-tags,
+    .platforms-eyebrow,
+    .platforms-section-label
+  ) {
+  color: var(--landing-muted);
+}
+.experience-home .capability-main-title span {
+  color: var(--landing-muted);
+}
+.experience-home .platform-tabs button {
+  color: var(--landing-muted);
+  border-color: var(--line);
+}
+.experience-home .platform-tabs button[aria-selected="true"] {
+  color: var(--landing-ink);
+  background: #fff;
+  border-color: #c6c8cd;
+}
+.experience-home .preview-side .selected {
+  color: #3e4249;
+  background: #e9eaed;
+}
+.experience-home .preview-heading .brand-mark {
+  color: var(--landing-accent);
+}
+.experience-home .chart-bars i {
+  background: linear-gradient(0deg, #2873b9, #8fb6da);
+}
+.experience-home .device-status:before {
+  background: var(--landing-accent);
+}
+.experience-home .reach-about-link,
+.experience-home .reach-highlight {
+  color: var(--landing-ink);
+}
+
+/* Vectramind has four brand colours, not a single green primary. */
+body:has(.experience-home) {
+  --brand-blue: #2873b9;
+  --brand-red: #e22526;
+  --brand-yellow: #f2bb0b;
+  --brand-gold-ink: #846509;
+  --brand-green: #318a3e;
+}
+body:has(.experience-home) .header-home,
+body:has(.experience-home) .header-home.header-scrolled {
+  color: var(--landing-ink);
+  background: #fafafaf0;
+}
+.experience-home .experience-hero {
+  --foreground: #292b30;
+  --muted: #62656b;
+  --blue: #3c4148;
+  background:
+    radial-gradient(ellipse at 50% 70%, #ededf0 0, transparent 48%), #fafafa;
+}
+.experience-home .experience-hero h1 {
+  text-shadow: 0 2px 30px #fafafa;
+}
+.experience-home .experience-hero .experience-title-mask:last-child {
+  color: var(--landing-ink);
+}
+.experience-home
+  .experience-hero
+  :is(
+    .experience-kicker,
+    .experience-hero-description,
+    .experience-pillars,
+    .experience-scroll,
+    .experience-hero-foot > p
+  ) {
+  color: var(--landing-muted);
+}
+.experience-home .experience-kicker > span {
+  background: var(--brand-blue);
+}
+.experience-home .experience-pillars i {
+  border-color: var(--brand-blue);
+}
+.experience-home .experience-pillars > span:nth-child(2) i {
+  border-color: var(--brand-red);
+}
+.experience-home .experience-pillars > span:nth-child(3) i {
+  border-color: var(--brand-gold-ink);
+}
+.experience-home .chart-bars i:nth-child(4n + 2) {
+  background: linear-gradient(0deg, #e22526, #ef9a9b);
+}
+.experience-home .chart-bars i:nth-child(4n + 3) {
+  background: linear-gradient(0deg, #b28c15, #e6ce7d);
+}
+.experience-home .chart-bars i:nth-child(4n + 4) {
+  background: linear-gradient(0deg, #318a3e, #9bc6a2);
+}
+.experience-home .platform-category {
+  color: #555a62;
+  background: #f4f4f5;
+}
+.experience-home .platform-category:nth-child(3n + 1) {
+  border-color: #b8ccdf;
+}
+.experience-home .platform-category:nth-child(3n + 2) {
+  border-color: #e7c0c1;
+}
+.experience-home .platform-category:nth-child(3n + 3) {
+  border-color: #dfd2aa;
+}
+body:has(.experience-home) .floating-contact {
+  color: #555a62;
+  border-color: #dedfe2;
+}
+.experience-home .preview-side {
+  background: #f3f3f4;
+  border-color: #e2e3e6;
+}
+.experience-home .preview-stats > div {
+  background: #f5f5f6;
+  border-color: #e9e9eb;
+}
+.experience-home .platform-device {
+  border-color: #d5d6d8;
+}
+.experience-home .device-chrome {
+  background: #fafafa;
+  border-color: #e5e6e8;
+}
+.experience-home .preview-tags > span {
+  border-color: #dedfe2;
+}
+.experience-home .macbook-pedestal-top {
+  background: linear-gradient(145deg, #d9dadc, #e6e6e8);
+}
+.experience-home .macbook-pedestal-front {
+  background: linear-gradient(100deg, #c5c6c8, #d8d9db 50%, #c3c4c6);
+}
+body:has(.experience-home) .cookie-notice {
+  background: #ffffffed;
+}
+
+/* Silver foundations; the logo's colours are small signals, never a page tint. */
+
+.experience-home .reach-statement p {
+  color: #585d66;
+}
+.experience-home .reach-metric svg {
+  color: #9499a3;
+}

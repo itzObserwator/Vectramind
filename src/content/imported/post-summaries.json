@@ -1,0 +1,82 @@
+[
+  {
+    "id": "blog23",
+    "slug": "the-patient-journey-that-isn-t-a-journey-at-all",
+    "title": "The \"patient journey\" that isn't a journey at all.",
+    "excerpt": "A journey implies direction. Someone walking alongside you. But what most patients get is a maze with no map!",
+    "category": "Healthcare",
+    "image": "/images/blog-patientjourney-isnt.webp"
+  },
+  {
+    "id": "blog22",
+    "slug": "a-patient-can-be-standing-in-the-right-place-and-still-feel-completely-lost",
+    "title": "A patient can be standing in the right place and still feel completely lost",
+    "excerpt": "The most damaging patient experience failures don't announce themselves. They arrive in the form of a hesitation, a glance, a moment of uncertainty, and they never show up in your operational reports.",
+    "category": "Patient Care",
+    "image": "/images/blog-alone-patient.webp"
+  },
+  {
+    "id": "blog21",
+    "slug": "why-patients-drop-off-before-consultation",
+    "title": "Why Patients Drop Off Before Consultation",
+    "excerpt": "Not every lost patient looks like a no-show. Some arrive and never check in. Some check in — and still leave before seeing a doctor. These are not different problems. They are the same signal.",
+    "category": "Operations",
+    "image": "/images/blog-patients_dropoff.webp"
+  },
+  {
+    "id": "blog20",
+    "slug": "healthcare-digital-systems-fail-the-patient-experience-here-s-how-it-s-fixed",
+    "title": "Healthcare digital systems fail the patient experience. Here's how it's fixed.",
+    "excerpt": "Hospitals are more digitized than ever. Yet patients still feel confused, lost, and unsupported. The problem isn't the technology, it's the 'missing layer' between it.",
+    "category": "Systems",
+    "image": "/images/blog-health-caredigital.webp"
+  },
+  {
+    "id": "blog19",
+    "slug": "what-the-klas-performance-overview-reveals-about-firstpass-by-vectramind-health",
+    "title": "What the KLAS Performance Overview reveals about Firstpass by Vectramind Health",
+    "excerpt": "The ratings reinforce Firstpass as the platform of choice. One of the most invaluable reaffirmations that Firstpass as an AI-native, patient experience and engagement platform could achieve was this recent finding by KLAS Research.",
+    "category": "KLAS",
+    "image": "/images/blog-fp365.webp"
+  },
+  {
+    "id": "blog18",
+    "slug": "what-the-2026-klas-rating-means-for-firstpass",
+    "title": "What the 2026 KLAS Rating means for Firstpass",
+    "excerpt": "Receiving a rating from KLAS Research, one of the world's most reputed companies in healthcare technology research is often seen as a milestone. But it is also a signal — that something fundamental is changing in how healthcare organizations think about patient experience.",
+    "category": "Recognition",
+    "image": "/images/blog-fpklas_small.webp"
+  },
+  {
+    "id": "blog17",
+    "slug": "how-firstpass-enables-person-centered-care",
+    "title": "How firstpass enables person-centered care.",
+    "excerpt": "Healthcare systems across the world agree on one thing: person-centered care is the future, and improving patient satisfaction through technology. Yet most hospitals still struggle to operationalize it.",
+    "category": "Care Model",
+    "image": "/images/blog-fpwait.webp"
+  },
+  {
+    "id": "blog16",
+    "slug": "how-person-centered-care-drives-measurable-roi-operational-efficiency",
+    "title": "How person-centered care drives measurable ROI + operational efficiency",
+    "excerpt": "It's becoming increasingly clear: healthcare organizations around the world today operate under intense pressure — rising patient expectations, shrinking margins, staff shortages, and a global push toward value-based, person-centered care.",
+    "category": "ROI",
+    "image": "/images/blog-roiblog.webp"
+  },
+  {
+    "id": "blog15",
+    "slug": "vectramind-health-makes-an-impact-at-pcc-global-health-baltimore-usa",
+    "title": "Vectramind Health makes an impact at PCC Global Health, Baltimore USA!",
+    "excerpt": "12th–15th October 2025 holds a special pride of place in our Vectramind calendar! We were beyond thrilled to explore our ongoing journey in healthcare at the prestigious Person-Centered Care (PCC) Global Forum.",
+    "category": "Events",
+    "image": "/images/blog-baltimore.webp"
+  },
+  {
+    "id": "blog14",
+    "slug": "how-to-get-more-out-of-your-conversational-ai",
+    "title": "How to get more out of your Conversational AI.",
+    "excerpt": "Conversational AI, simply put, is 'machine learning technology' with NLP (Natural Language Processing) capabilities, that allow machines to understand and respond to human language in a way that just comes across as more human.",
+    "category": "AI",
+    "image": "/images/blog-ai_help.webp"
+  }
+]
