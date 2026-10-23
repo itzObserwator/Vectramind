@@ -19,6 +19,7 @@ const types = {
   ".js": "text/javascript; charset=utf-8",
   ".css": "text/css; charset=utf-8",
   ".json": "application/json",
+  ".map": "application/json",
   ".txt": "text/plain; charset=utf-8",
   ".png": "image/png",
   ".jpg": "image/jpeg",
@@ -125,7 +126,7 @@ const server = createServer(async (req, res) => {
     }
     let body = await readFile(file);
     if (
-      /\.(html|js|css|json|txt|svg|xml)$/.test(extension) &&
+      /\.(html|js|css|json|map|txt|svg|xml)$/.test(extension) &&
       body.length > 1024
     ) {
       headers.Vary = "Accept-Encoding";

@@ -11,7 +11,7 @@
 .post-hero-client-strip > p {
   margin: 0;
   font-size: 11px;
-  color: #777;
+  color: #62656b;
 }
 .post-hero-static-logos {
   display: grid;
@@ -61,7 +61,7 @@
   font-weight: 500;
   text-transform: uppercase;
   letter-spacing: 0.09em;
-  color: #7f7f7f;
+  color: #62656b;
   margin: 0 0 25px;
 }
 .post-hero-copy h2 {
@@ -84,7 +84,7 @@
 .post-hero-description {
   font-size: 13px;
   line-height: 1.85;
-  color: #787878;
+  color: #62656b;
   max-width: 390px;
   margin: 28px 0 0;
   text-wrap: pretty;
@@ -189,7 +189,7 @@
   box-shadow: 0 8px 25px #3a3a3a10;
   font-size: 10px;
   line-height: 1.4;
-  color: #848484;
+  color: #62656b;
 }
 .post-hero-card strong {
   color: #474747;
@@ -233,7 +233,7 @@
   width: 100%;
   text-align: center;
   font-size: 9px;
-  color: #929292;
+  color: #62656b;
 }
 .post-hero-resolution {
   text-align: center;
@@ -419,7 +419,7 @@
 .post-hero-outcome > p {
   margin: 8px 0 3px;
   font-size: 9px;
-  color: #818181;
+  color: #62656b;
   line-height: 1.4;
 }
 .post-hero-outcome > a {

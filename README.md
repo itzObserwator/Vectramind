@@ -129,6 +129,8 @@ Lower sections keep their copy and controls in the HTML. Animation controllers l
 
 The production server supports Brotli/gzip compression, conditional caching, immutable hashed assets and streaming video byte ranges. Configure equivalent delivery behavior when hosting `out/` elsewhere. Use `node scripts/optimize-images.mjs` for newly imported photography; original assets remain available.
 
+`public/robots.txt` supplies explicit crawler rules in development and in the static export. Production browser source maps are enabled for diagnostics; the source is already public in this repository. They are fetched by debugging tools rather than normal page navigation, and the included server serves them as compressed JSON.
+
 ## Content and scope
 
 Brand assets, client logos, company photos, published statistics and product information come from Vectramind's current website. Business figures are presented as published, not independently verified. The dashboard and patient journey are clearly marked as illustrations. Published anonymized Synapse outcomes replace third-party testimonials.

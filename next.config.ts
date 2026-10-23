@@ -6,6 +6,9 @@ const config: NextConfig = {
   experimental: { inlineCss: true },
   trailingSlash: true,
   images: { unoptimized: true },
+  // This repository is public. Publish maps for production diagnostics without
+  // adding them to the assets downloaded during normal page navigation.
+  productionBrowserSourceMaps: true,
   poweredByHeader: false,
 };
 export default config;
