@@ -2,10 +2,16 @@
 import { Canvas, useFrame } from "@react-three/fiber";
 import { CatmullRomCurve3, Color, Vector3 } from "three";
 import { Component, useMemo, type ReactNode } from "react";
+import {
+  trailPulseColors,
+  trailPulseDelay,
+  trailPulseDuration,
+  trailPulseLength,
+  trailPulseOpacity,
+} from "./trail-pulses";
 
 // Original screenshot geometry. Animate material color and brightness, so the
 // ribbon silhouettes, spacing and thickness stay exactly in their set pose.
-const pulseColors = ["#2873B9", "#318A3E", "#E22526", "#F2BB0B"];
 function RibbonTrails({ still }: { still: boolean }) {
   const time = useMemo(() => ({ value: 1.6 }), []);
   const curves = useMemo(
@@ -40,9 +46,16 @@ function RibbonTrails({ still }: { still: boolean }) {
             depthWrite={false}
             onBeforeCompile={(shader) => {
               shader.uniforms.uPulseTime = time;
-              shader.uniforms.uTrailPhase = { value: ((i % 20) / 20) * 1.93 };
+              const pulseIndex = Math.floor(i / 5);
+              shader.uniforms.uPulseDuration = {
+                value: trailPulseDuration(pulseIndex),
+              };
+              shader.uniforms.uPulseDelay = {
+                value: trailPulseDelay(pulseIndex),
+              };
+              shader.uniforms.uPulseEnabled = { value: i % 5 === 0 ? 1 : 0 };
               shader.uniforms.uPulseColor = {
-                value: new Color(pulseColors[i % pulseColors.length]),
+                value: new Color(trailPulseColors[pulseIndex % 4]),
               };
               shader.vertexShader =
                 `varying float vTrailPosition;\n${shader.vertexShader}`.replace(
@@ -50,17 +63,19 @@ function RibbonTrails({ still }: { still: boolean }) {
                   "#include <begin_vertex>\nvTrailPosition = uv.x;",
                 );
               shader.fragmentShader =
-                `uniform float uPulseTime;\nuniform float uTrailPhase;\nuniform vec3 uPulseColor;\nvarying float vTrailPosition;\n${shader.fragmentShader}`.replace(
+                `uniform float uPulseTime;\nuniform float uPulseDuration;\nuniform float uPulseDelay;\nuniform float uPulseEnabled;\nuniform vec3 uPulseColor;\nvarying float vTrailPosition;\n${shader.fragmentShader}`.replace(
                   "#include <color_fragment>",
                   `#include <color_fragment>
-              // Four-second cycles; only the traveling pulse takes a logo color.
+              // Mirror each curve at its midpoint: the solid footer-style
+              // streaks travel inward from both ends of both ribbon bundles.
               float along = abs(vTrailPosition - 0.5) * 2.0;
-              float packet = fract(along * 1.5 + uPulseTime * 0.25 + uTrailPhase);
-              float head = exp(-pow((packet - 0.5) / 0.04, 2.0));
-              float tail = exp(-pow((packet - 0.58) / 0.12, 2.0)) * 0.3;
-              float pulse = clamp(head + tail, 0.0, 1.0);
+              // Each arm is half a full path, so double both normalized speed
+              // and dash length to retain the footer's physical proportions.
+              float packet = fract(along + 2.0 * (uPulseTime - uPulseDelay) / uPulseDuration);
+              float edge = max(fwidth(along), 0.0002);
+              float pulse = (1.0 - smoothstep(${trailPulseLength * 2} - edge, ${trailPulseLength * 2} + edge, packet)) * uPulseEnabled;
               diffuseColor.rgb = mix(diffuseColor.rgb, uPulseColor, pulse);
-              diffuseColor.a = min(0.9, diffuseColor.a + pulse * 0.42);
+              diffuseColor.a = mix(diffuseColor.a, ${trailPulseOpacity}, pulse);
             `,
                 );
             }}

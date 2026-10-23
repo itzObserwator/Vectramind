@@ -1,7 +1,5 @@
-"use client";
 import Link from "next/link";
-import { useState, type ReactNode } from "react";
-import { motion, useReducedMotion } from "framer-motion";
+import type { ReactNode } from "react";
 import { Arrow, SectionLabel } from "@/components/site-primitives";
 import { Button } from "@/components/ui/button";
 
@@ -22,18 +20,11 @@ export function PageHero({
   href?: string;
   image?: string;
 }) {
-  const reduced = useReducedMotion();
   return (
     <section
       className={`inner-hero page-padding ${image ? "inner-hero-photo" : ""}`}
       id="top"
     >
-      {image && (
-        <div className="inner-hero-bg">
-          <img src={`/images/${image}`} alt="" data-parallax />
-          <div />
-        </div>
-      )}
       <div className="inner-breadcrumb">
         <Link href="/">Home</Link>
         <span>/</span>
@@ -42,20 +33,16 @@ export function PageHero({
       <div className="inner-hero-grid">
         <div>
           <span className="eyebrow inner-eyebrow">{eyebrow}</span>
+          <span className="page-brand-colours" aria-hidden="true">
+            <i />
+            <i />
+            <i />
+            <i />
+          </span>
           <h1 className="display">
-            {title.map((line, i) => (
+            {title.map((line) => (
               <span className="inner-title-mask" key={line}>
-                <motion.span
-                  initial={reduced ? false : { y: "105%" }}
-                  animate={{ y: 0 }}
-                  transition={{
-                    duration: 1,
-                    delay: i * 0.12,
-                    ease: [0.77, 0, 0.175, 1],
-                  }}
-                >
-                  {line}
-                </motion.span>
+                <span>{line}</span>
               </span>
             ))}
           </h1>
@@ -69,13 +56,56 @@ export function PageHero({
             </Button>
           )}
         </div>
-        {children && <div className="inner-hero-art">{children}</div>}
+        <div className="inner-hero-art" data-reveal>
+          {image ? (
+            <figure className="page-hero-photo">
+              <img
+                src={`/images/${image}`}
+                alt={
+                  eyebrow === "Meet Vectramind"
+                    ? "The Vectramind team"
+                    : "Life at Vectramind"
+                }
+                fetchPriority="high"
+              />
+              <figcaption>{eyebrow}</figcaption>
+            </figure>
+          ) : (
+            children || <PageConnectionArt />
+          )}
+        </div>
       </div>
       <div className="inner-hero-bottom">
         <span>Intelligence. Innovation. Technology.</span>
         <span>With you in mind. ↓</span>
       </div>
     </section>
+  );
+}
+function PageConnectionArt() {
+  return (
+    <div className="page-connection-art" aria-hidden="true">
+      <svg viewBox="0 0 500 360" fill="none">
+        {Array.from({ length: 18 }, (_, i) => (
+          <path
+            key={i}
+            d={`M -40 ${35 + i * 9} C 120 ${40 + i * 9}, 130 ${300 - i * 6}, 270 ${230 - i * 2} S 390 ${80 + i * 4}, 540 ${100 + i * 6}`}
+            stroke="#b8bec8"
+            strokeOpacity=".45"
+          />
+        ))}
+        {["#2873b9", "#e22526", "#f2bb0b", "#318a3e"].map((colour, i) => (
+          <circle
+            key={colour}
+            cx={160 + i * 56}
+            cy={177 + Math.sin(i) * 25}
+            r="4"
+            fill={colour}
+          />
+        ))}
+      </svg>
+      <span>People. Platforms. Possibilities.</span>
+    </div>
   );
 }
 export function IntroSection({
@@ -133,52 +163,7 @@ export function FeatureGrid({
     </section>
   );
 }
-export function FaqList({
-  items,
-  searchable = false,
-}: {
-  items: readonly (readonly [string, string])[];
-  searchable?: boolean;
-}) {
-  const [query, setQuery] = useState("");
-  const filtered = items.filter((item) =>
-    item.join(" ").toLowerCase().includes(query.toLowerCase()),
-  );
-  return (
-    <div className="faq-list">
-      {searchable && (
-        <label className="faq-search">
-          <span className="eyebrow">Find an answer</span>
-          <input
-            type="search"
-            placeholder="Search questions, products, integrations…"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-          />
-        </label>
-      )}
-      <div aria-live="polite">
-        {filtered.length === 0 && (
-          <p className="empty-results">
-            No matching answers. Try another search or contact our team.
-          </p>
-        )}
-        {filtered.map(([question, answer], i) => (
-          <details key={question}>
-            <summary>
-              <span className="eyebrow">{String(i + 1).padStart(2, "0")}</span>
-              {question}
-              <span className="faq-toggle" aria-hidden="true">
-                +
-              </span>
-            </summary>
-            <p>{answer}</p>
-          </details>
-        ))}
-      </div>
-    </div>
-  );
-}
+export { FaqList } from "./faq-list";
 export function PageCta({
   title = "Your next chapter starts here.",
   text = "Let’s bring your goals, your people and your systems into a shared direction.",

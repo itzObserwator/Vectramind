@@ -1,10 +1,14 @@
 "use client";
-import dynamic from "next/dynamic";
-import { useEffect, useRef, useState } from "react";
-import { useInView } from "framer-motion";
-const Scene = dynamic(() => import("./hero-energy-scene"), { ssr: false });
-// The faint secondary sweep is part of the supplied screenshot, rather than
-// a temporary loading layer. Keep it behind the original Three.js ribbons.
+import { useEffect, useRef, type CSSProperties } from "react";
+import trails from "./hero-trail-paths.json";
+import {
+  trailPulseColors,
+  trailPulseDelay,
+  trailPulseDuration,
+  trailPulseLength,
+  trailPulseOpacity,
+} from "./trail-pulses";
+
 function RibbonUnderlay() {
   return (
     <svg
@@ -28,35 +32,66 @@ function RibbonUnderlay() {
 }
 export function HeroEnergy() {
   const root = useRef<HTMLDivElement>(null);
-  const visible = useInView(root, { margin: "80px" });
-  const [reduced, setReduced] = useState(false);
-  const [tabVisible, setTabVisible] = useState(true);
-  const [ready, setReady] = useState(false);
   useEffect(() => {
-    const preference = matchMedia("(prefers-reduced-motion: reduce)");
-    const syncPreference = () => setReduced(preference.matches);
-    const syncVisibility = () =>
-      setTabVisible(document.visibilityState === "visible");
-    syncPreference();
-    syncVisibility();
-    preference.addEventListener("change", syncPreference);
-    document.addEventListener("visibilitychange", syncVisibility);
+    const element = root.current;
+    if (!element) return;
+    let visible = false;
+    const sync = () => {
+      element.dataset.active = String(visible && !document.hidden);
+    };
+    const observer = new IntersectionObserver(([entry]) => {
+      visible = entry.isIntersecting;
+      sync();
+    });
+    observer.observe(element);
+    document.addEventListener("visibilitychange", sync);
     return () => {
-      preference.removeEventListener("change", syncPreference);
-      document.removeEventListener("visibilitychange", syncVisibility);
+      observer.disconnect();
+      document.removeEventListener("visibilitychange", sync);
     };
   }, []);
-  useEffect(() => {
-    if (visible) setReady(true);
-  }, [visible]);
   return (
     <div
       ref={root}
       className="hero-signal hero-energy signal-field"
       aria-hidden="true"
+      data-active="false"
     >
       <RibbonUnderlay />
-      {ready && <Scene visible={visible && tabVisible} still={!!reduced} />}
+      <svg className="hero-ribbon-main" viewBox="0 0 1000 1000" fill="none">
+        {trails.map((trail, index) => (
+          <path
+            key={index}
+            d={trail.d}
+            stroke={index % 5 === 0 ? "#979797" : "#b8b8b8"}
+            strokeWidth={trail.width}
+            opacity={index % 5 === 0 ? 0.3 : 0.14}
+          />
+        ))}
+        {trails
+          .filter((trail) => trail.left)
+          .flatMap((trail, index) =>
+            [trail.left, trail.right].map((d, side) => (
+              <path
+                key={`${index}-${side}`}
+                className="hero-trail-pulse"
+                d={d}
+                pathLength="1"
+                stroke={trailPulseColors[index % 4]}
+                strokeWidth={trail.width}
+                strokeLinecap="round"
+                strokeDasharray={`${trailPulseLength * 2} ${1 - trailPulseLength * 2}`}
+                opacity={trailPulseOpacity}
+                style={
+                  {
+                    "--hero-pulse-duration": `${trailPulseDuration(index) / 2}s`,
+                    "--hero-pulse-delay": `${trailPulseDelay(index) - 1.6}s`,
+                  } as CSSProperties
+                }
+              />
+            )),
+          )}
+      </svg>
     </div>
   );
 }

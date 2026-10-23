@@ -1,80 +1,40 @@
-/* Video's post-hero sequence: moving logo strip, question, 2D connection
-   diagram, centered resolution. All artwork is editable HTML and SVG. */
+/* Static major-brand strip, followed by the post-hero introduction. */
 .post-hero-client-strip {
-  position: relative;
   display: grid;
-  grid-template-columns: 150px 1fr 28px;
+  grid-template-columns: 150px minmax(0, 1fr);
   gap: 28px;
   align-items: center;
   padding: 25px clamp(24px, 5.5vw, 110px);
   background: #fafafa;
-  border-top: 1px solid #e5e5e5;
-  border-bottom: 1px solid #e5e5e5;
+  border-block: 1px solid #e5e5e5;
 }
 .post-hero-client-strip > p {
   margin: 0;
   font-size: 11px;
-  color: #777777;
+  color: #777;
 }
-.post-hero-logo-window {
-  overflow: hidden;
-  mask-image: linear-gradient(
-    90deg,
-    transparent,
-    #000 7%,
-    #000 93%,
-    transparent
-  );
-}
-.post-hero-logo-belt {
-  display: flex;
-  width: max-content;
-  animation: post-hero-logos 38s linear infinite;
-}
-.post-hero-logo-list {
-  display: flex;
-  flex-shrink: 0;
-  gap: 64px;
+.post-hero-static-logos {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   align-items: center;
+  gap: 28px;
   margin: 0;
-  padding: 0 64px 0 0;
+  padding: 0;
   list-style: none;
 }
-.post-hero-logo-list li {
-  width: 125px;
-  height: 52px;
+.post-hero-static-logos li {
   display: flex;
   align-items: center;
   justify-content: center;
+  min-width: 0;
+  height: 52px;
 }
-.post-hero-logo-list img {
-  max-width: 125px;
-  max-height: 42px;
+.post-hero-static-logos img {
   width: auto;
   height: auto;
+  max-width: min(100%, 125px);
+  max-height: 42px;
   object-fit: contain;
-}
-.post-hero-logo-toggle {
-  width: 28px;
-  height: 28px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 1px solid #dbdbdb;
-  border-radius: 50%;
-  background: transparent;
-  color: #797979;
-  font-size: 12px;
-}
-.post-hero-client-strip[data-paused="true"] .post-hero-logo-belt,
-.post-hero-logo-window:hover .post-hero-logo-belt,
-.post-hero-logo-window:focus-within .post-hero-logo-belt {
-  animation-play-state: paused;
-}
-@keyframes post-hero-logos {
-  to {
-    transform: translateX(-50%);
-  }
 }
 .post-hero-intro {
   position: relative;
@@ -189,30 +149,32 @@
   display: block;
   width: 100%;
   aspect-ratio: 1;
-  border: 1px solid #bfbfbf63;
+  border: 1px solid #c5c9cf;
   border-radius: 50%;
   background: radial-gradient(
-    ellipse at 40% 12%,
-    #fffffff2,
-    #dbdbdb 32%,
-    #a9a9a938 65%,
-    #dbdbdb3b 80%,
-    #fafafcb3
+    circle at 34% 24%,
+    #ffffff 0%,
+    #f5f6f7 16%,
+    #e2e4e7 46%,
+    #ccd0d5 76%,
+    #b8bec6 100%
   );
   box-shadow:
-    inset 0 1px 2px #fff,
-    0 10px 24px #7575750a;
+    inset 0 1px 2px #ffffff,
+    inset -3px -5px 10px #828d9b12,
+    0 6px 14px #3741510d;
 }
 .post-hero-node-top,
 .post-hero-node-right {
-  left: 0;
+  left: 50%;
   top: 0;
-  transform: translateY(-50%);
+  transform: translate(-50%, -50%);
 }
 .post-hero-node-left {
-  left: -5%;
+  left: 50%;
   bottom: -10%;
   width: 110%;
+  transform: translateX(-50%);
 }
 .post-hero-card {
   position: absolute;
@@ -304,21 +266,10 @@
 }
 @media (max-width: 900px) {
   .post-hero-client-strip {
-    grid-template-columns: 110px 1fr 28px;
+    grid-template-columns: 110px minmax(0, 1fr);
     gap: 15px;
     padding-top: 20px;
     padding-bottom: 20px;
-  }
-  .post-hero-logo-list {
-    gap: 45px;
-    padding-right: 45px;
-  }
-  .post-hero-logo-list li {
-    width: 110px;
-  }
-  .post-hero-logo-list img {
-    max-width: 110px;
-    max-height: 36px;
   }
   .post-hero-intro {
     padding-top: 55px;
@@ -354,7 +305,7 @@
 }
 @media (max-width: 600px) {
   .post-hero-client-strip {
-    grid-template-columns: 1fr 26px;
+    grid-template-columns: 1fr;
     padding: 18px 20px;
     gap: 12px;
   }
@@ -362,18 +313,6 @@
     grid-column: 1/-1;
     font-size: 10px;
     text-align: center;
-  }
-  .post-hero-logo-list {
-    gap: 35px;
-    padding-right: 35px;
-  }
-  .post-hero-logo-list li {
-    width: 100px;
-    height: 38px;
-  }
-  .post-hero-logo-list img {
-    max-width: 100px;
-    max-height: 31px;
   }
   .post-hero-intro {
     padding: 55px 24px 50px;
@@ -419,26 +358,8 @@
     font-size: 24px;
   }
 }
-@media (prefers-reduced-motion: reduce) {
-  .post-hero-logo-belt {
-    animation: none;
-  }
-  .post-hero-logo-list[aria-hidden="true"] {
-    display: none;
-  }
-  .post-hero-logo-window {
-    overflow-x: auto;
-    mask-image: none;
-  }
-  .post-hero-logo-toggle {
-    display: none;
-  }
-}
 /* Reference sequence: glass columns, two inset badges, a rising cap whose
    column stretches from a fixed baseline, then rolling result digits. */
-.post-hero-logo-belt {
-  animation-duration: 24s;
-}
 .post-hero-outcome {
   position: absolute;
   left: 74%;
@@ -538,5 +459,19 @@
   }
   .post-hero-resolution {
     padding-top: 60px;
+  }
+}
+
+@media (max-width: 600px) {
+  .post-hero-static-logos {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px 28px;
+  }
+  .post-hero-static-logos li {
+    height: 42px;
+  }
+  .post-hero-static-logos img {
+    max-height: 34px;
+    max-width: min(100%, 115px);
   }
 }

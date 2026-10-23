@@ -5,7 +5,13 @@ import { resolve, extname, sep } from "node:path";
 import { brotliCompressSync, gzipSync, constants } from "node:zlib";
 
 const root = resolve("out");
-const port = Number(process.env.PORT || 3000);
+const portArgument = process.argv.find((argument) =>
+  argument.startsWith("--port="),
+);
+const port = Number(process.env.PORT ?? portArgument?.slice(7) ?? 3000);
+if (!Number.isInteger(port) || port < 0 || port > 65535) {
+  throw new Error("The preview port must be an integer between 0 and 65535.");
+}
 const host = process.env.HOST || "127.0.0.1";
 const encoded = new Map();
 const types = {
@@ -165,6 +171,8 @@ const server = createServer(async (req, res) => {
     );
   }
 });
-server.listen(port, host, () =>
-  console.log(`Vectramind production preview: http://${host}:${port}`),
-);
+server.listen(port, host, () => {
+  const actualPort = server.address().port;
+  console.log(`Vectramind production preview: http://${host}:${actualPort}`);
+  process.send?.({ type: "ready", port: actualPort });
+});

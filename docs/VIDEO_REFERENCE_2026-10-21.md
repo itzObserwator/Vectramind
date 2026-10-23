@@ -407,3 +407,37 @@ The active city stays centered and the 30 Hz/pixel/idle rendering limits remain.
 Short desktop screens use native document flow; mobile stacks heading, globe,
 offices and statistics. Bottom spacing keeps the desktop metrics clear of the
 persistent consent and contact controls.
+
+
+### Footer reference, 30.6–35.8 seconds
+
+Reviewed the uploaded video's closing sequence using the extracted frames in
+`/tmp/vectramind-oct21-reference/`: the heading enters above three contact
+columns, then a diagonal light stream curves upward on the right. The lower
+row contains the brand, navigation and compact Join form, followed by legal
+and social links. The physical laptop surrounding the reference is not part
+of the footer component.
+
+Rebuilt the shared footer with this composition, staggered entrance motion,
+neutral flowing trails, four logo-colour pulses and pre-baked drifting mist.
+The agreed light silver/charcoal theme and Vectramind content remain. The
+trails use SVG and CSS, with no WebGL canvas. Intersection and document
+visibility suspend their motion; reduced motion removes continuous animation
+and entrance transforms. Mobile stacks the contact columns and lower rows.
+
+Contact links use the existing support email and contact/office routes. No
+phone number was invented. As static hosting has no mailing-list backend,
+Join validates the address and prepares an explicit email request for the
+visitor to review and send; it does not claim a recorded subscription.
+
+Validation: production build generated all 23 routes. `npm run test:footer`
+checks contact/navigation links, moving pulses, offscreen pause, required and
+invalid email handling, the reviewable email request, back-to-top, bounds at
+320–2560px, reduced motion and the shared footer on the About page. Chrome
+reported no page errors. Desktop and mobile captures were inspected.
+
+## Production rendering optimization — 2026-10-23
+
+The current hero projects the original camera and Catmull–Rom geometry at build time (`scripts/generate-hero-trails.mjs`) and renders SVG paths with the same four inward-moving pulse streams. It does not create a WebGL context. The active component is `hero-energy.tsx`; `hero-energy-scene.tsx` is retained as historical source.
+
+Section animation controllers are split into `*-animation.ts` modules and loaded before their sections enter view. Their original timeline stages and easing remain intact. The office globe now uses a visibility-aware Three.js `Timer` directly, with the same shaders, projection and location selection, avoiding the deprecated clock in the previous renderer wrapper.

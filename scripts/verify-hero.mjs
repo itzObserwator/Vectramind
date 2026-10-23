@@ -30,8 +30,10 @@ try {
     if (m.type() === "error") errors.push(m.text());
   });
   await page.goto(base, { waitUntil: "networkidle" });
-  const canvas = page.locator(".hero-energy canvas");
-  await expect(canvas).toHaveCount(1);
+  const trails = page.locator(".hero-energy .hero-ribbon-main");
+  await expect(trails).toHaveCount(1);
+  await expect(page.locator(".hero-energy canvas")).toHaveCount(0);
+  await expect(trails.locator(".hero-trail-pulse")).toHaveCount(16);
   await page.waitForTimeout(1800);
   const first = await pixels(page);
   await page.waitForTimeout(1100);
@@ -73,7 +75,7 @@ try {
   await page.waitForTimeout(600);
   expect(
     difference(frozen, await pixels(page)),
-    "Reduced motion must freeze shader time",
+    "Reduced motion must freeze trail pulses",
   ).toBe(0);
   await expect(
     page.getByRole("link", { name: "Explore our platforms" }),

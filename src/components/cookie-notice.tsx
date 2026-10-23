@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
 
 export function CookieNotice() {
   const [visible, setVisible] = useState(false);
@@ -13,14 +12,9 @@ export function CookieNotice() {
     }
   }, []);
   return (
-    <AnimatePresence>
+    <>
       {visible && (
-        <motion.div
-          className="cookie-notice"
-          initial={{ y: 25, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          exit={{ y: 25, opacity: 0 }}
-        >
+        <div className="cookie-notice">
           <span>Your preferences stay on this device.</span>
           <button
             onClick={() => {
@@ -32,8 +26,8 @@ export function CookieNotice() {
           >
             Got it
           </button>
-        </motion.div>
+        </div>
       )}
-    </AnimatePresence>
+    </>
   );
 }

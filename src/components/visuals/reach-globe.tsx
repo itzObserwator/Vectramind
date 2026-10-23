@@ -1,7 +1,7 @@
 "use client";
 import dynamic from "next/dynamic";
 import { useEffect, useRef, useState, useSyncExternalStore } from "react";
-import { useInView } from "framer-motion";
+import { useViewportPresence } from "@/components/use-viewport-presence";
 import { reachLocations } from "@/content/global-reach";
 const Scene = dynamic(() => import("./reach-globe-scene"), { ssr: false });
 function Fallback() {
@@ -32,7 +32,7 @@ function Fallback() {
 export function ReachGlobe({ selectedOffice }: { selectedOffice: number }) {
   const labels = useRef<SVGSVGElement>(null);
   const root = useRef<HTMLDivElement>(null);
-  const visible = useInView(root, { margin: "100px" });
+  const visible = useViewportPresence(root, "100px");
   const reduced = useSyncExternalStore(
     (notify) => {
       const media = window.matchMedia("(prefers-reduced-motion: reduce)");

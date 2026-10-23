@@ -155,7 +155,7 @@
     10px/1.4 Inter,
     sans-serif;
   font-variant-numeric: tabular-nums;
-  opacity: 0.6;
+  opacity: 1;
 }
 .reach-office-name {
   font:
@@ -171,7 +171,7 @@
     10px/1.3 Inter,
     sans-serif;
   letter-spacing: 0;
-  color: #777e89;
+  color: #626a76;
 }
 .reach-office-list button > svg {
   width: 17px;
@@ -219,7 +219,7 @@
     10px/1.5 Inter,
     sans-serif;
   font-variant-numeric: tabular-nums;
-  color: #747b86;
+  color: #626a76;
   margin-right: 10px;
 }
 .reach-office-controls button {
@@ -284,7 +284,7 @@
   text-align: center;
   padding-top: 10px;
 }
-.reach-metric svg {
+.reach-metric .reach-metric-laurel {
   position: absolute;
   top: 0;
   left: 50%;
@@ -456,7 +456,7 @@
   .reach-metrics {
     gap: 10px;
   }
-  .reach-metric svg {
+  .reach-metric .reach-metric-laurel {
     width: 86px;
     height: 60px;
   }

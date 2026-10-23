@@ -1,50 +1,25 @@
 "use client";
-import { useLayoutEffect, useRef, useState, type CSSProperties } from "react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useDeferredAnimation } from "@/components/use-deferred-animation";
+import { useRef, useState, type CSSProperties } from "react";
 import Link from "next/link";
 import { Arrow, Mark } from "@/components/site-primitives";
 import { ecosystemNodes, experience } from "@/content/experience";
 import { EcosystemOrbits, orbitPosition } from "./ecosystem-orbits";
-import { createEcosystemEntrance } from "./ecosystem-motion";
 import { EcosystemAtmosphere } from "./ecosystem-atmosphere";
 
-gsap.registerPlugin(ScrollTrigger);
+import { useNearViewport } from "@/components/use-near-viewport";
 
 export function ConnectedEcosystem() {
   const root = useRef<HTMLElement>(null);
+  const ready = useNearViewport(root);
   const [active, setActive] = useState<number | null>(null);
-  useLayoutEffect(() => {
-    const media = gsap.matchMedia();
-    media.add(
-      {
-        desktop: "(min-width: 901px)",
-        motion: "(prefers-reduced-motion: no-preference)",
-      },
-      (context) => {
-        const section = root.current;
-        if (!section) return;
-        if (!context.conditions?.motion) {
-          section.dataset.phase = "complete";
-          return () => {
-            delete section.dataset.phase;
-          };
-        }
-        createEcosystemEntrance(section, !!context.conditions.desktop);
-        const observer = new IntersectionObserver(([entry]) => {
-          section.dataset.visible = String(entry.isIntersecting);
-        });
-        observer.observe(section);
-        return () => {
-          observer.disconnect();
-          delete section.dataset.visible;
-          delete section.dataset.phase;
-        };
-      },
-      root,
-    );
-    return () => media.revert();
-  }, []);
+  useDeferredAnimation(ready, () =>
+    import("./ecosystem-animation").then(
+      ({ mount }) =>
+        () =>
+          mount(root),
+    ),
+  );
 
   const detailPosition =
     active === null
@@ -83,6 +58,7 @@ export function ConnectedEcosystem() {
           <EcosystemOrbits />
           <div
             className="ecosystem-hub"
+            role="img"
             aria-label="Vectramind, at the center of your connected experience"
           >
             <Mark />
@@ -104,7 +80,11 @@ export function ConnectedEcosystem() {
                 onClick={() => setActive(index)}
                 onFocus={() => setActive(index)}
                 onMouseEnter={() => setActive(index)}
-                aria-label={node.label}
+                aria-label={
+                  "shortLabel" in node
+                    ? `${node.shortLabel}: ${node.label}`
+                    : node.label
+                }
                 aria-pressed={active === index}
                 aria-describedby={
                   active === index ? "ecosystem-detail" : undefined

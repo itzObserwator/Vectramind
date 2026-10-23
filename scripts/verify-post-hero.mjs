@@ -11,9 +11,7 @@ try {
   const section = page.locator(".post-hero-intro");
   await expect(section.locator("canvas")).toHaveCount(0);
   await expect(section.locator("h2")).toContainText("Are disconnected");
-  await expect(
-    page.locator(".post-hero-logo-list:not([aria-hidden]) img"),
-  ).toHaveCount(6);
+  await expect(page.locator(".post-hero-static-logos img")).toHaveCount(4);
   // Approaching the section must not consume the entrance below the fold.
   const graphic = page.locator(".post-hero-graphic");
   await graphic.evaluate((el) =>
@@ -102,18 +100,16 @@ try {
     scrollTo(0, el.getBoundingClientRect().top + scrollY - 110),
   );
   await page.waitForTimeout(500);
-  const belt = page.locator(".post-hero-logo-belt");
-  const x = (await belt.boundingBox()).x;
+  const logos = strip.locator(".post-hero-static-logos img");
+  await expect(logos).toHaveCount(4);
+  await expect(strip.getByRole("button")).toHaveCount(0);
+  const positions = await logos.evaluateAll((es) =>
+    es.map((e) => e.getBoundingClientRect().x),
+  );
   await page.waitForTimeout(450);
-  expect(Math.abs((await belt.boundingBox()).x - x)).toBeGreaterThan(3);
-  await page
-    .getByRole("button", { name: "Pause client strip", exact: true })
-    .click();
-  await expect(belt).toHaveCSS("animation-play-state", "paused");
-  await page
-    .getByRole("button", { name: "Play client strip", exact: true })
-    .click();
-  await expect(belt).toHaveCSS("animation-play-state", "running");
+  expect(
+    await logos.evaluateAll((es) => es.map((e) => e.getBoundingClientRect().x)),
+  ).toEqual(positions);
   await page.evaluate(() => scrollTo(0, 0));
   await page.waitForTimeout(200);
   await expect(graphic).toHaveAttribute("data-animation-phase", "complete");
@@ -155,7 +151,7 @@ try {
   await page.screenshot({ path: "/tmp/vectramind-post-hero-mobile.png" });
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.waitForTimeout(250);
-  await expect(belt).toHaveCSS("animation-name", "none");
+  await expect(strip.locator("ul")).toHaveCSS("animation-name", "none");
   await expect(page.locator(".post-hero-progress-fill")).toHaveCSS(
     "transform",
     "none",
@@ -167,7 +163,7 @@ try {
   await expect(graphic).toHaveAttribute("data-animation-phase", "static");
   expect(errors).toEqual([]);
   console.log(
-    "Passed: 2D-only post-hero graphic, six client logos, moving/pausable belt, timed sequence while scrolling is stopped, rising marker, rolling case result, no replay on reentry, CTA, 320–2560px layout, reduced motion, and no browser errors.",
+    "Passed: 2D-only post-hero graphic, four static client logos, timed sequence while scrolling is stopped, rising marker, rolling case result, no replay on reentry, CTA, 320–2560px layout, reduced motion, and no browser errors.",
   );
 } finally {
   await browser.close();

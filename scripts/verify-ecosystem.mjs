@@ -124,7 +124,7 @@ try {
   ).not.toBe(light);
   expect((await nodes.nth(4).boundingBox()).y).toBeCloseTo(before.y, 1);
   await page
-    .getByRole("button", { name: "Patient journeys", exact: true })
+    .getByRole("button", { name: /Patient care: Patient journeys/ })
     .click();
   await expect(track.locator(".ecosystem-detail")).toContainText(
     "From appointment to ongoing care",

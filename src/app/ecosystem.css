@@ -127,18 +127,9 @@
   color: #318a3e;
   display: block;
 }
-.ecosystem-hub .brand-mark svg {
+.ecosystem-hub .brand-mark img {
   width: 100%;
   height: auto;
-}
-.ecosystem-hub .brand-mark path:first-child {
-  fill: #f2bb0b;
-}
-.ecosystem-hub .brand-mark path:nth-child(2) {
-  fill: #2873b9;
-}
-.ecosystem-hub .brand-mark path:last-child {
-  fill: #e83635;
 }
 .orbital-ecosystem .ecosystem-node {
   position: absolute;

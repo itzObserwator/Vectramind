@@ -1,7 +1,6 @@
 "use client";
 import Link from "next/link";
 import { useState } from "react";
-import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { ArrowRight01Icon } from "@hugeicons/core-free-icons";
 import { SectionLabel, Mark, Arrow } from "@/components/site-primitives";
@@ -32,7 +31,6 @@ const cases = [
 ];
 export function CaseStudies() {
   const [active, setActive] = useState(0);
-  const reduced = useReducedMotion();
   return (
     <section className="case-studies page-padding section-space">
       <SectionLabel right="Published Synapse success stories">
@@ -67,22 +65,14 @@ export function CaseStudies() {
         </div>
         <div className="case-story" aria-live="polite">
           <Mark />
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={active}
-              initial={reduced ? false : { y: 20, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              exit={{ y: -20, opacity: 0 }}
-              transition={{ duration: 0.35 }}
-            >
-              <h3>{cases[active].title}</h3>
-              <p>{cases[active].text}</p>
-              <Link href="/synapse" className="text-link">
-                Read the Synapse stories
-                <Arrow />
-              </Link>
-            </motion.div>
-          </AnimatePresence>
+          <div key={active} className="case-story-content">
+            <h3>{cases[active].title}</h3>
+            <p>{cases[active].text}</p>
+            <Link href="/synapse" className="text-link">
+              Read the Synapse stories
+              <Arrow />
+            </Link>
+          </div>
         </div>
       </div>
     </section>

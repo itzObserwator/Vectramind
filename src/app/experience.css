@@ -205,6 +205,16 @@
   justify-content: center;
   gap: 28px;
 }
+.experience-hero-actions .hero-platform-button {
+  background: #fff;
+  color: #292b30;
+  border: 1px solid #bec5d0;
+  border-radius: 999px;
+}
+.experience-hero-actions .hero-platform-button:hover {
+  background: #f4f5f7;
+  border-color: #89919d;
+}
 .experience-quiet-link {
   display: inline-flex;
   align-items: center;
@@ -985,7 +995,7 @@
   overflow: hidden;
 }
 .experience-hero .hero-energy {
-  inset: 17% -15% -18%;
+  inset: 8% -15% -18%;
   width: 130%;
   height: 101%;
   opacity: 0.8;
@@ -999,7 +1009,7 @@
 }
 @media (max-width: 600px) {
   .experience-hero .hero-energy {
-    inset: 22% -50% -20%;
+    inset: 12% -50% -20%;
     width: 200%;
     height: 98%;
     opacity: 0.6;
@@ -1054,4 +1064,24 @@ body:has(.experience-home) .floating-contact {
   color: #50594a;
   border-color: #d8ddd2;
   background: #fffffff0;
+}
+
+/* Original camera-projected ribbons, rendered without a WebGL runtime. */
+.hero-ribbon-main { position: absolute; top: 0; left: 50%; height: 100%; width: auto; aspect-ratio: 1; overflow: visible; transform: translateX(-50%); }
+.hero-trail-pulse { animation: hero-trail-pulse var(--hero-pulse-duration) linear infinite; animation-delay: var(--hero-pulse-delay); animation-play-state: paused; }
+.hero-energy[data-active="true"] .hero-trail-pulse { animation-play-state: running; }
+@keyframes hero-trail-pulse { from { stroke-dashoffset: 0; } to { stroke-dashoffset: -1; } }
+.hero-title-enter { animation: hero-title-enter .65s cubic-bezier(.22,1,.36,1) both; }
+@keyframes hero-title-enter { from { transform: translateY(8px); } to { transform: translateY(0); } }
+@media (prefers-reduced-motion: reduce) { .hero-trail-pulse, .hero-title-enter { animation: none; } }
+
+/* Small interface transitions do not need the full animation runtime at entry. */
+.mobile-nav { animation: navigation-enter .2s ease-out both; }
+.cookie-notice { animation: notice-enter .3s ease-out both; }
+.capability-number-mobile { transition: transform .65s cubic-bezier(.22, 1, .36, 1); }
+@keyframes navigation-enter { from { opacity: 0; transform: translateY(-12px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes notice-enter { from { opacity: 0; transform: translateY(25px); } to { opacity: 1; transform: translateY(0); } }
+@media (prefers-reduced-motion: reduce) {
+  .mobile-nav, .cookie-notice { animation: none; }
+  .capability-number-mobile { transition: none; }
 }

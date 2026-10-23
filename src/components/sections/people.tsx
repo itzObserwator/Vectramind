@@ -16,9 +16,11 @@ export function People() {
       caption: "Founder & CEO",
     },
     {
-      src: "event-39.webp",
+      src: "milestone-01.jpg",
       label: "Ideas that bring us together",
-      caption: "Global Health 2025",
+      caption: "A milestone moment for Vectramind",
+      alt: "Vectramind’s founder at a meeting in Dubai",
+      wide: true,
     },
     {
       src: "event-31.webp",
@@ -87,11 +89,14 @@ export function People() {
         tabIndex={0}
       >
         {images.map((item) => (
-          <figure key={item.src}>
+          <figure
+            key={item.src}
+            className={item.wide ? "people-photo-wide" : undefined}
+          >
             <div className="people-image">
               <img
                 src={`/images/${item.src}`}
-                alt={item.label}
+                alt={item.alt || item.label}
                 loading="lazy"
               />
             </div>

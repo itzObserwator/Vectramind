@@ -11,6 +11,8 @@ try {
   });
   const track = page.locator(".reference-capabilities");
   await expect(track.locator("canvas")).toHaveCount(0);
+  await expect(track.locator(".capability-visual-stage")).toHaveCount(0);
+  await track.scrollIntoViewIfNeeded();
   await expect(track.locator(".capability-visual-stage")).toHaveCount(3);
   await expect(
     track.locator(".capability-intelligence-grid .capability-signal"),

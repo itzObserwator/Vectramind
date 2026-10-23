@@ -1,0 +1,204 @@
+/* Client directory: shared landing-page gutters and a quiet editorial grid. */
+.experience-home .clients-editorial {
+  padding: clamp(65px, 7vw, 110px) 0;
+  background: #f8f9fa;
+}
+.client-section-inner {
+  margin-inline: clamp(24px, 5.5vw, 110px);
+}
+.client-editorial-heading {
+  display: grid;
+  grid-template-columns: 1.35fr 1fr;
+  align-items: end;
+  gap: 60px;
+  margin: 58px 0 48px;
+}
+.client-editorial-heading h2 {
+  margin: 0;
+  font:
+    400 clamp(38px, 4.2vw, 68px)/1.07 Space,
+    Inter,
+    sans-serif;
+  letter-spacing: -0.05em;
+  text-wrap: balance;
+  color: #292b30;
+}
+.client-editorial-heading p {
+  margin: 0 0 4px;
+  max-width: 350px;
+  font-size: 14px;
+  line-height: 1.85;
+  color: #626a76;
+}
+.client-directory-grid {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-left: 1px solid #dfe2e7;
+  border-top: 1px solid #dfe2e7;
+}
+.client-directory-grid li {
+  min-width: 0;
+  display: grid;
+  place-items: center;
+  height: clamp(110px, 10vw, 160px);
+  padding: 22px;
+  margin: 0;
+  border-right: 1px solid #dfe2e7;
+  border-bottom: 1px solid #dfe2e7;
+  background: #fff;
+}
+.client-directory-grid img {
+  width: 100%;
+  max-width: 155px;
+  height: 66px;
+  object-fit: contain;
+}
+.client-directory-caption {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  margin-top: 20px;
+}
+.client-directory-caption p {
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.7;
+  color: #626a76;
+}
+.client-directory-caption button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  flex: none;
+  padding: 11px 18px;
+  min-height: 44px;
+  border: 1px solid #c8ced6;
+  border-radius: 99px;
+  background: #fff;
+  color: #292b30;
+  font-size: 12px;
+  cursor: pointer;
+}
+.client-directory-caption button:hover {
+  background: #eef0f3;
+}
+.client-directory-caption button:focus-visible {
+  outline: 2px solid #292b30;
+  outline-offset: 4px;
+}
+.client-directory-caption button span {
+  font-size: 18px;
+  line-height: 1;
+}
+.client-principles {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 32px;
+  margin-top: 64px;
+}
+.client-principles > div {
+  border-top: 1px solid #d8dde5;
+  padding-top: 22px;
+}
+.client-principles > div:nth-child(1) {
+  border-color: #91b5d7;
+}
+.client-principles > div:nth-child(2) {
+  border-color: #e6a0a1;
+}
+.client-principles > div:nth-child(3) {
+  border-color: #ddc571;
+}
+.client-principles > div:nth-child(4) {
+  border-color: #9ac4a0;
+}
+.client-principles h3 {
+  margin: 0 0 12px;
+  color: #292b30;
+  font:
+    400 18px/1.35 Space,
+    Inter,
+    sans-serif;
+  letter-spacing: -0.025em;
+}
+.client-principles p {
+  margin: 0;
+  max-width: 300px;
+  color: #626a76;
+  font-size: 12px;
+  line-height: 1.85;
+}
+@media (max-width: 1000px) {
+  .client-directory-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+  .client-editorial-heading {
+    gap: 35px;
+  }
+  .client-principles {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 600px) {
+  .client-section-inner {
+    margin-inline: 22px;
+  }
+  .client-editorial-heading {
+    grid-template-columns: 1fr;
+    gap: 22px;
+    margin: 36px 0 32px;
+  }
+  .client-editorial-heading h2 {
+    font-size: clamp(32px, 8.4vw, 44px);
+  }
+  .client-editorial-heading p {
+    font-size: 13px;
+  }
+  .client-directory-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .client-directory-grid li {
+    height: 104px;
+    padding: 18px;
+  }
+  .client-directory-grid img {
+    height: 60px;
+    max-width: 135px;
+  }
+  .client-directory-caption {
+    flex-direction: column;
+    align-items: start;
+    gap: 15px;
+  }
+  .client-principles {
+    gap: 30px 22px;
+    margin-top: 44px;
+  }
+  .client-principles h3 {
+    font-size: 17px;
+  }
+  .client-principles p {
+    font-size: 11px;
+  }
+}
+@media (max-width: 360px) {
+  .client-principles {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .client-directory[data-visible="true"] .client-directory-grid li {
+    animation: client-logo-enter .45s ease-out both;
+    animation-delay: var(--logo-delay, 0s);
+  }
+}
+@keyframes client-logo-enter {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}

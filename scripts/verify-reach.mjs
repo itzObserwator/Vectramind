@@ -26,7 +26,7 @@ try {
     "products",
   );
   await expect(section).toHaveCount(1);
-  const tab = (name) => section.getByRole("tab", { name, exact: true });
+  const tab = (name) => section.getByRole("tab", { name: new RegExp(name) });
   const canvas = section.locator("canvas");
   async function scrub(p) {
     await section.evaluate(
@@ -201,9 +201,9 @@ try {
     fallback.locator("#global-reach .reach-globe-fallback"),
   ).toBeVisible();
   await expect(
-    fallback.getByRole("tab", { name: "Dubai", exact: true }),
+    fallback.getByRole("tab", { name: /Dubai/ }),
   ).toBeVisible();
-  await fallback.getByRole("tab", { name: "Vancouver", exact: true }).click();
+  await fallback.getByRole("tab", { name: /Vancouver/ }).click();
   await expect(
     fallback.locator("#global-reach").getByRole("tabpanel"),
   ).toContainText("Canada");

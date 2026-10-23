@@ -2,7 +2,6 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { Menu01Icon, Cancel01Icon } from "@hugeicons/core-free-icons";
 import { Arrow, ContactButton } from "@/components/site-primitives";
@@ -69,36 +68,31 @@ export function Header() {
           <HugeiconsIcon icon={menu ? Cancel01Icon : Menu01Icon} size={24} />
         </button>
       </div>
-      <AnimatePresence>
-        {menu && (
-          <motion.nav
-            id="mobile-nav"
-            className="mobile-nav"
-            aria-label="Mobile navigation"
-            initial={{ opacity: 0, y: -12 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -12 }}
-          >
-            {[
-              ...navigation,
-              ["Our clients", "/#clients"],
-              ["Insights", "/blog"],
-              ["Careers", "/careers"],
-              ["Contact", "/contact"],
-            ].map(([label, href]) => (
-              <Link
-                key={href}
-                href={href}
-                onClick={() => setMenu(false)}
-                aria-current={pathname === href ? "page" : undefined}
-              >
-                {label}
-                <Arrow />
-              </Link>
-            ))}
-          </motion.nav>
-        )}
-      </AnimatePresence>
+      {menu && (
+        <nav
+          id="mobile-nav"
+          className="mobile-nav"
+          aria-label="Mobile navigation"
+        >
+          {[
+            ...navigation,
+            ["Our clients", "/#clients"],
+            ["Insights", "/blog"],
+            ["Careers", "/careers"],
+            ["Contact", "/contact"],
+          ].map(([label, href]) => (
+            <Link
+              key={href}
+              href={href}
+              onClick={() => setMenu(false)}
+              aria-current={pathname === href ? "page" : undefined}
+            >
+              {label}
+              <Arrow />
+            </Link>
+          ))}
+        </nav>
+      )}
     </header>
   );
 }

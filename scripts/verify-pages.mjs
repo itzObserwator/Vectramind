@@ -73,6 +73,22 @@ for (const post of posts) {
   expect(await page.locator(".article-body").textContent()).toBeTruthy();
 }
 await page.screenshot({ path: `${shots}/desktop-article.png` });
+await page.goto(`${base}/synapse/`, { waitUntil: "networkidle" });
+await page.getByRole("button", { name: "Next success story" }).click();
+await expect(page.locator(".case-story h3")).toHaveText(
+  "Built for the pace of every transaction.",
+);
+await expect(page.locator(".case-counter")).toHaveText("02 / 03");
+await page.getByRole("button", { name: "Previous success story" }).click();
+await expect(page.locator(".case-story h3")).toHaveText(
+  "A more connected patient journey.",
+);
+await page.emulateMedia({ reducedMotion: "reduce" });
+await expect(page.locator(".case-story-content")).toHaveCSS(
+  "animation-name",
+  "none",
+);
+await page.emulateMedia({ reducedMotion: "no-preference" });
 await page.goto(`${base}/firstpass/`, { waitUntil: "networkidle" });
 await page.getByRole("tab", { name: "fp engage", exact: true }).click();
 await expect(page.getByRole("tabpanel")).toContainText(

@@ -1,17 +1,26 @@
 "use client";
-import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import {
-  Component,
   useEffect,
-  useMemo,
   useRef,
   useState,
   type ReactNode,
   type RefObject,
 } from "react";
-import { BufferGeometry, Float32BufferAttribute, Group, Vector3 } from "three";
+import {
+  BufferGeometry,
+  Float32BufferAttribute,
+  Group,
+  Vector3,
+  Mesh,
+  Points,
+  Scene,
+  ShaderMaterial,
+  SphereGeometry,
+  PerspectiveCamera,
+  WebGLRenderer,
+  Timer,
+} from "three";
 import { reachLocations } from "@/content/global-reach";
-
 // A single regular sample per land point keeps the reference's crisp dot pattern.
 const vertex = `varying float alpha; uniform float pixelRatio; uniform float dotScale;
 void main(){vec4 p=modelViewMatrix*vec4(position,1.); float facing=dot(normalize(normalMatrix*position),normalize(-p.xyz));
@@ -26,208 +35,6 @@ type MapProps = {
   selectedOffice: number;
   labels: RefObject<SVGSVGElement | null>;
 };
-// Demand rendering separates the decorative globe from the scroll frame rate.
-// The GPU draws at most 30 times per second and stops completely when hidden.
-function RenderBudget({ running }: { running: boolean }) {
-  const invalidate = useThree((state) => state.invalidate);
-  const setDpr = useThree((state) => state.setDpr);
-  const size = useThree((state) => state.size);
-  const currentDpr = useThree((state) => state.viewport.dpr);
-  useEffect(() => {
-    // Cap both density and total pixels, including ultrawide/high-DPI displays.
-    const target = Math.min(
-      1,
-      Math.sqrt(1_400_000 / Math.max(1, size.width * size.height)),
-    );
-    if (Math.abs(currentDpr - target) > 0.001) setDpr(target);
-    invalidate();
-  }, [size.width, size.height, currentDpr, setDpr, invalidate]);
-  useEffect(() => {
-    if (!running) return;
-    let request = 0;
-    let previous = 0;
-    const tick = (now: number) => {
-      if (now - previous >= 1000 / 30) {
-        previous = now - ((now - previous) % (1000 / 30));
-        invalidate();
-      }
-      request = requestAnimationFrame(tick);
-    };
-    request = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(request);
-  }, [running, invalidate]);
-  return null;
-}
-
-function Globe({
-  data,
-  still,
-  selectedOffice,
-  labels,
-  moving,
-  onSettled,
-}: MapProps & { moving: boolean; onSettled: () => void }) {
-  const earth = useRef<Group>(null);
-  const clock = useRef(0);
-  const lastStamp = useRef(0);
-  const renderer = useThree((state) => state.gl);
-  const camera = useThree((state) => state.camera);
-  const invalidate = useThree((state) => state.invalidate);
-  useEffect(() => {
-    invalidate();
-  }, [selectedOffice, still, invalidate]);
-  const size = useThree((state) => state.size);
-  const pixelRatio = useThree((state) => state.viewport.dpr);
-  const compact = size.width <= 900;
-  const rotation = useRef((-reachLocations[0].longitude * Math.PI) / 180);
-  const tilt = useRef((reachLocations[0].latitude * Math.PI) / 180);
-  const annotations = useRef<
-    { root: SVGGElement; leader: SVGPathElement; label: SVGGElement }[]
-  >([]);
-  useEffect(() => {
-    annotations.current = Array.from(
-      labels.current?.querySelectorAll<SVGGElement>("[data-location]") || [],
-    ).map((root) => ({
-      root,
-      leader: root.querySelector<SVGPathElement>("path")!,
-      label: root.querySelector<SVGGElement>(".reach-location-label")!,
-    }));
-  }, [labels]);
-  const uniforms = useMemo(
-    () => ({
-      pixelRatio: { value: pixelRatio },
-      dotScale: { value: compact ? 0.7 : 1 },
-    }),
-    [pixelRatio, compact],
-  );
-  const geometry = useMemo(() => {
-    const positions: number[] = [];
-    let land = 0;
-    for (let i = 0; i < data.length; i += 4) {
-      if (data[i + 3] < 0.5) continue;
-      // Fewer samples at small sizes keep distinct dots instead of a dark mass.
-      if (compact && land++ % 2) continue;
-      positions.push(data[i] * 2.405, data[i + 1] * 2.405, data[i + 2] * 2.405);
-    }
-    const result = new BufferGeometry();
-    result.setAttribute("position", new Float32BufferAttribute(positions, 3));
-    return result;
-  }, [data, compact]);
-  useEffect(() => () => geometry.dispose(), [geometry]);
-  const pins = useMemo(
-    () =>
-      reachLocations.map((location) => {
-        const lat = (location.latitude * Math.PI) / 180,
-          lon = (location.longitude * Math.PI) / 180;
-        return new Vector3(
-          Math.cos(lat) * Math.sin(lon) * 2.42,
-          Math.sin(lat) * 2.42,
-          Math.cos(lat) * Math.cos(lon) * 2.42,
-        );
-      }),
-    [],
-  );
-  const world = useMemo(() => new Vector3(), []);
-  const projected = useMemo(() => new Vector3(), []);
-  useFrame((_, delta) => {
-    if (!earth.current) return;
-    if (!still && moving) clock.current += Math.min(delta, 0.05);
-    const target = (-reachLocations[selectedOffice].longitude * Math.PI) / 180;
-    const latitude = (reachLocations[selectedOffice].latitude * Math.PI) / 180;
-    const difference = Math.atan2(
-      Math.sin(target - rotation.current),
-      Math.cos(target - rotation.current),
-    );
-    const latitudeDifference = latitude - tilt.current;
-    const ease = still ? 1 : 1 - Math.exp(-Math.min(delta, 0.05) * 5);
-    rotation.current += difference * ease;
-    tilt.current += latitudeDifference * ease;
-    earth.current.rotation.set(tilt.current, rotation.current, 0);
-    const settled =
-      still || Math.abs(difference) + Math.abs(latitudeDifference) < 0.001;
-    renderer.domElement.dataset.motion = settled ? "settled" : "moving";
-    renderer.domElement.dataset.office = reachLocations[selectedOffice].name;
-    if ((settled || still) && moving) onSettled();
-    earth.current.updateWorldMatrix(true, false);
-    pins.forEach((pin, index) => {
-      const annotation = annotations.current[index];
-      if (!annotation) return;
-      world.copy(pin);
-      earth.current!.localToWorld(world);
-      const front = camera.position.dot(world) - world.lengthSq() > 0.15;
-      annotation.root.style.opacity = front ? "1" : "0";
-      annotation.label.style.opacity = index === selectedOffice ? "1" : "0";
-      annotation.leader.style.opacity = index === selectedOffice ? "1" : "0";
-      annotation.root.dataset.facing = front ? "front" : "back";
-      projected.copy(world).project(camera);
-      const x = (projected.x * 0.5 + 0.5) * size.width,
-        y = (-projected.y * 0.5 + 0.5) * size.height;
-      const labelWidth = reachLocations[index].name.length * 6.3 + 18;
-      // The map now has its own panel; only the selected office needs a label.
-      const lx =
-        Math.max(
-          12,
-          Math.min(size.width - labelWidth - 12, x - labelWidth / 2),
-        ) - x;
-      const ly = 18;
-      annotation.root.setAttribute(
-        "transform",
-        `translate(${x.toFixed(1)} ${y.toFixed(1)})`,
-      );
-      annotation.leader.setAttribute(
-        "d",
-        `M0 0L${lx + labelWidth / 2} ${ly + 12}`,
-      );
-      annotation.label.setAttribute("transform", `translate(${lx} ${ly})`);
-    });
-    if (
-      clock.current - lastStamp.current > 0.45 ||
-      !renderer.domElement.dataset.rotation
-    ) {
-      renderer.domElement.dataset.rotation = clock.current.toFixed(3);
-      lastStamp.current = clock.current;
-    }
-  });
-  return (
-    <group
-      ref={earth}
-      rotation={[
-        (reachLocations[0].latitude * Math.PI) / 180,
-        (-reachLocations[0].longitude * Math.PI) / 180,
-        0,
-      ]}
-    >
-      <mesh>
-        <sphereGeometry args={[2.392, 48, 32]} />
-        <shaderMaterial
-          vertexShader={surfaceVertex}
-          fragmentShader={surfaceFragment}
-        />
-      </mesh>
-      <points geometry={geometry} frustumCulled={false}>
-        <shaderMaterial
-          vertexShader={vertex}
-          fragmentShader={fragment}
-          uniforms={uniforms}
-          transparent
-          depthWrite={false}
-        />
-      </points>
-    </group>
-  );
-}
-class Boundary extends Component<
-  { children: ReactNode; fallback: ReactNode },
-  { failed: boolean }
-> {
-  state = { failed: false };
-  static getDerivedStateFromError() {
-    return { failed: true };
-  }
-  render() {
-    return this.state.failed ? this.props.fallback : this.props.children;
-  }
-}
 export default function ReachGlobeScene({
   data,
   visible,
@@ -241,27 +48,208 @@ export default function ReachGlobeScene({
   fallback: ReactNode;
   onReady: () => void;
 }) {
-  const [moving, setMoving] = useState(true);
-  useEffect(() => setMoving(!still), [selectedOffice, still]);
-  return (
-    <Boundary fallback={fallback}>
-      <Canvas
-        dpr={1}
-        camera={{ position: [0, 0, 7.35], fov: 39 }}
-        frameloop="demand"
-        gl={{ alpha: true, antialias: true, powerPreference: "low-power" }}
-        onCreated={onReady}
-      >
-        <RenderBudget running={visible && !still && moving} />
-        <Globe
-          data={data}
-          still={still}
-          selectedOffice={selectedOffice}
-          labels={labels}
-          moving={moving}
-          onSettled={() => setMoving(false)}
-        />
-      </Canvas>
-    </Boundary>
+  const host = useRef<HTMLDivElement>(null);
+  const props = useRef({ visible, still, selectedOffice, onReady });
+  props.current = { visible, still, selectedOffice, onReady };
+  const wake = useRef<() => void>(() => {});
+  const [failed, setFailed] = useState(false);
+  useEffect(() => {
+    const container = host.current;
+    if (!container) return;
+    let renderer: WebGLRenderer;
+    try {
+      renderer = new WebGLRenderer({
+        alpha: true,
+        antialias: true,
+        powerPreference: "low-power",
+      });
+    } catch {
+      setFailed(true);
+      return;
+    }
+    const canvas = renderer.domElement;
+    canvas.style.cssText = "display:block;width:100%;height:100%";
+    container.append(canvas);
+    const scene = new Scene();
+    const camera = new PerspectiveCamera(39, 1, 0.1, 1000);
+    camera.position.set(0, 0, 7.35);
+    camera.updateMatrixWorld();
+    const earth = new Group();
+    scene.add(earth);
+    const surfaceGeometry = new SphereGeometry(2.392, 48, 32);
+    const surfaceMaterial = new ShaderMaterial({
+      vertexShader: surfaceVertex,
+      fragmentShader: surfaceFragment,
+    });
+    earth.add(new Mesh(surfaceGeometry, surfaceMaterial));
+    const dotMaterial = new ShaderMaterial({
+      vertexShader: vertex,
+      fragmentShader: fragment,
+      transparent: true,
+      depthWrite: false,
+      uniforms: { pixelRatio: { value: 1 }, dotScale: { value: 1 } },
+    });
+    const points = new Points(new BufferGeometry(), dotMaterial);
+    points.frustumCulled = false;
+    earth.add(points);
+    let compact: boolean | undefined;
+    let width = 1,
+      height = 1;
+    const annotations = Array.from(
+      labels.current?.querySelectorAll<SVGGElement>("[data-location]") || [],
+    ).map((root) => ({
+      root,
+      leader: root.querySelector<SVGPathElement>("path")!,
+      label: root.querySelector<SVGGElement>(".reach-location-label")!,
+    }));
+    const pins = reachLocations.map((location) => {
+      const lat = (location.latitude * Math.PI) / 180,
+        lon = (location.longitude * Math.PI) / 180;
+      return new Vector3(
+        Math.cos(lat) * Math.sin(lon) * 2.42,
+        Math.sin(lat) * 2.42,
+        Math.cos(lat) * Math.cos(lon) * 2.42,
+      );
+    });
+    const world = new Vector3(),
+      projected = new Vector3();
+    let rotation = (-reachLocations[0].longitude * Math.PI) / 180;
+    let tilt = (reachLocations[0].latitude * Math.PI) / 180;
+    let request = 0,
+      previous = 0,
+      elapsed = 0,
+      lastStamp = 0,
+      disposed = false;
+    // Timer is Three's visibility-aware replacement for the deprecated Clock.
+    const timer = new Timer();
+    timer.connect(document);
+    const paint = (now: number) => {
+      request = 0;
+      if (disposed || !props.current.visible || document.hidden) return;
+      if (previous && now - previous < 1000 / 30) {
+        request = requestAnimationFrame(paint);
+        return;
+      }
+      previous = now;
+      timer.update(now);
+      const delta = Math.min(timer.getDelta(), 0.05);
+      const { selectedOffice: selected, still: reduced } = props.current;
+      const target = (-reachLocations[selected].longitude * Math.PI) / 180;
+      const latitude = (reachLocations[selected].latitude * Math.PI) / 180;
+      const difference = Math.atan2(
+        Math.sin(target - rotation),
+        Math.cos(target - rotation),
+      );
+      const latitudeDifference = latitude - tilt;
+      const ease = reduced ? 1 : 1 - Math.exp(-delta * 5);
+      rotation += difference * ease;
+      tilt += latitudeDifference * ease;
+      earth.rotation.set(tilt, rotation, 0);
+      const settled =
+        reduced || Math.abs(difference) + Math.abs(latitudeDifference) < 0.001;
+      if (!reduced && !settled) elapsed += delta;
+      canvas.dataset.motion = settled ? "settled" : "moving";
+      canvas.dataset.office = reachLocations[selected].name;
+      earth.updateWorldMatrix(true, false);
+      pins.forEach((pin, index) => {
+        const annotation = annotations[index];
+        if (!annotation) return;
+        earth.localToWorld(world.copy(pin));
+        const front = camera.position.dot(world) - world.lengthSq() > 0.15;
+        annotation.root.style.opacity = front ? "1" : "0";
+        annotation.label.style.opacity = index === selected ? "1" : "0";
+        annotation.leader.style.opacity = index === selected ? "1" : "0";
+        annotation.root.dataset.facing = front ? "front" : "back";
+        projected.copy(world).project(camera);
+        const x = (projected.x * 0.5 + 0.5) * width,
+          y = (-projected.y * 0.5 + 0.5) * height;
+        const labelWidth = reachLocations[index].name.length * 6.3 + 18;
+        const lx =
+          Math.max(12, Math.min(width - labelWidth - 12, x - labelWidth / 2)) -
+          x;
+        annotation.root.setAttribute(
+          "transform",
+          `translate(${x.toFixed(1)} ${y.toFixed(1)})`,
+        );
+        annotation.leader.setAttribute("d", `M0 0L${lx + labelWidth / 2} 30`);
+        annotation.label.setAttribute("transform", `translate(${lx} 18)`);
+      });
+      if (elapsed - lastStamp > 0.45 || !canvas.dataset.rotation) {
+        canvas.dataset.rotation = elapsed.toFixed(3);
+        lastStamp = elapsed;
+      }
+      renderer.render(scene, camera);
+      props.current.onReady();
+      if (!settled) request = requestAnimationFrame(paint);
+    };
+    const start = () => {
+      if (!props.current.visible || document.hidden) {
+        cancelAnimationFrame(request);
+        request = 0;
+        return;
+      }
+      if (!request) {
+        previous = 0;
+        timer.reset();
+        request = requestAnimationFrame(paint);
+      }
+    };
+    wake.current = start;
+    const resize = () => {
+      width = Math.max(1, container.clientWidth);
+      height = Math.max(1, container.clientHeight);
+      const density = Math.min(1, Math.sqrt(1_400_000 / (width * height)));
+      renderer.setPixelRatio(density);
+      renderer.setSize(width, height, false);
+      camera.aspect = width / height;
+      camera.updateProjectionMatrix();
+      dotMaterial.uniforms.pixelRatio.value = density;
+      const nextCompact = width <= 900;
+      if (compact !== nextCompact) {
+        compact = nextCompact;
+        const positions: number[] = [];
+        let land = 0;
+        for (let i = 0; i < data.length; i += 4) {
+          if (data[i + 3] < 0.5 || (compact && land++ % 2)) continue;
+          positions.push(
+            data[i] * 2.405,
+            data[i + 1] * 2.405,
+            data[i + 2] * 2.405,
+          );
+        }
+        points.geometry.dispose();
+        points.geometry = new BufferGeometry();
+        points.geometry.setAttribute(
+          "position",
+          new Float32BufferAttribute(positions, 3),
+        );
+        dotMaterial.uniforms.dotScale.value = compact ? 0.7 : 1;
+      }
+      start();
+    };
+    const observer = new ResizeObserver(resize);
+    observer.observe(container);
+    document.addEventListener("visibilitychange", start);
+    resize();
+    return () => {
+      disposed = true;
+      wake.current = () => {};
+      cancelAnimationFrame(request);
+      observer.disconnect();
+      document.removeEventListener("visibilitychange", start);
+      timer.dispose();
+      surfaceGeometry.dispose();
+      surfaceMaterial.dispose();
+      points.geometry.dispose();
+      dotMaterial.dispose();
+      renderer.dispose();
+      canvas.remove();
+    };
+  }, [data, labels]);
+  useEffect(() => wake.current(), [visible, still, selectedOffice]);
+  return failed ? (
+    fallback
+  ) : (
+    <div ref={host} style={{ position: "absolute", inset: 0 }} />
   );
 }

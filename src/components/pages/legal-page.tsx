@@ -9,11 +9,11 @@ export function LegalPage({ type }: { type: "terms" | "privacy" }) {
   let index = 0;
   const headings: { id: string; text: string }[] = [];
   const body = document.html.replace(
-    /<h3>([\s\S]*?)<\/h3>/g,
-    (_, text: string) => {
+    /<h([3-6])>([\s\S]*?)<\/h\1>/g,
+    (_, level: string, text: string) => {
       const id = `policy-section-${index++}`;
       headings.push({ id, text: text.replace(/<[^>]+>/g, "").trim() });
-      return `<h3 id="${id}">${text}</h3>`;
+      return `<h${level} id="${id}">${text}</h${level}>`;
     },
   );
   return (

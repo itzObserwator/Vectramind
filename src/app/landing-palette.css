@@ -1,5 +1,5 @@
 /* One landing-page palette. Product logos, photographs and logo-colour pulses
-   retain their own colours; inner pages keep their existing theme. */
+   retain their own colours. Inner pages share the palette via page-theme.css. */
 body:has(.experience-home) {
   --background: #fafafa;
   --foreground: #292b30;
@@ -197,8 +197,8 @@ body:has(.experience-home) .header-home.header-scrolled {
   background: linear-gradient(0deg, #318a3e, #9bc6a2);
 }
 .experience-home .platform-category {
-  color: #555a62;
-  background: #f4f4f5;
+  color: #30343b;
+  background: #fff;
 }
 .experience-home .platform-category:nth-child(3n + 1) {
   border-color: #b8ccdf;

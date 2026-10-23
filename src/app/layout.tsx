@@ -8,7 +8,11 @@ import "./ecosystem.css";
 import "./platforms.css";
 import "./global-reach.css";
 import "./landing-palette.css";
+import "./footer.css";
+import "./clients.css";
+import "./page-theme.css";
 export const metadata: Metadata = {
+  icons: { icon: "/images/vectramind-mark.svg" },
   title: "Vectramind — Transforming Human Experiences",
   description:
     "Adapt & evolve with Vectramind. AI-powered customer engagement, unified patient experiences, and seamlessly connected systems. Discover Synapse and Firstpass.",
@@ -27,6 +31,13 @@ export default function RootLayout({
         <link
           rel="preload"
           href="/fonts/inter-latin.woff2"
+          as="font"
+          type="font/woff2"
+          crossOrigin="anonymous"
+        />
+        <link
+          rel="preload"
+          href="/fonts/space-latin.woff2"
           as="font"
           type="font/woff2"
           crossOrigin="anonymous"

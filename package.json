@@ -18,7 +18,16 @@
     "test:capabilities": "node scripts/verify-capabilities.mjs",
     "test:ecosystem": "node scripts/verify-ecosystem.mjs",
     "test:platform-cards": "node scripts/verify-platform-cards.mjs",
-    "test:reach": "node scripts/verify-reach.mjs"
+    "test:reach": "node scripts/verify-reach.mjs",
+    "test:footer": "node scripts/verify-footer.mjs",
+    "test:page-theme": "node scripts/verify-page-theme.mjs",
+    "test:inner-reveals": "node scripts/verify-inner-reveals.mjs",
+    "generate:hero": "node scripts/generate-hero-trails.mjs",
+    "audit:desktop": "node scripts/audit-lighthouse.mjs --desktop",
+    "audit:mobile": "node scripts/audit-lighthouse.mjs",
+    "audit": "node scripts/audit-lighthouse.mjs --all",
+    "preview": "npm run build && node scripts/serve.mjs --port=3001",
+    "test:capabilities-mobile": "node scripts/verify-capabilities-mobile.mjs"
   },
   "dependencies": {
     "@hugeicons/core-free-icons": "4.3.5",
