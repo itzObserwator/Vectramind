@@ -23,11 +23,9 @@ export function Stories() {
             <img
               src={`/images/${story.image}`}
               alt={
-                i === 0
-                  ? "Patients and healthcare staff at reception, from Vectramind’s Firstpass page"
-                  : i === 1
-                    ? "The people and culture at Vectramind"
-                    : "The Vectramind team together"
+                story.image === "about_culture.webp"
+                  ? "The people and culture at Vectramind"
+                  : "The Vectramind team together"
               }
               loading="lazy"
               data-parallax

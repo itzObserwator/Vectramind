@@ -6,7 +6,6 @@ import { ConnectedEcosystem } from "@/components/experience/ecosystem";
 import { GlobalReach } from "@/components/experience/global-reach";
 import { OurPlatforms } from "@/components/experience/our-platforms";
 import { ClientStrip } from "@/components/sections/client-strip";
-import { PlatformShowcase } from "@/components/sections/platform-showcase";
 import { ClientsAndStats } from "@/components/sections/clients-and-stats";
 import { Stories } from "@/components/sections/stories";
 import { People } from "@/components/sections/people";
@@ -21,7 +20,6 @@ export function HomePage() {
       <ConnectedEcosystem />
       <OurPlatforms />
       <GlobalReach />
-      <PlatformShowcase />
       <ClientsAndStats />
       <Stories />
       <People />

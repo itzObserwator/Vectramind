@@ -112,14 +112,6 @@ export const statistics = [
 ];
 export const stories = [
   {
-    eyebrow: "Connected healthcare",
-    title: "A better journey, at every touchpoint.",
-    text: "Firstpass brings appointments, patient flow, communication and real-time governance into one unified patient experience platform.",
-    image: "firstpass-live-care.webp",
-    link: "/firstpass",
-    cta: "Discover Firstpass",
-  },
-  {
     eyebrow: "Meaningful conversations",
     title: "Every message is an opportunity to connect.",
     text: "Synapse turns functional messaging into engaging conversations across SMS, WhatsApp, email, RCS and more.",
