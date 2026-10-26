@@ -18,6 +18,18 @@ export function mountMotion() {
       smoothWheel: true,
       anchors: { offset: -80 },
     });
+    // CSS overflow alone cannot stop an in-flight smooth-scroll animation.
+    // Keep the menu's native scrolling independent of the page scroll engine.
+    const syncNavigation = () => {
+      if (document.body.hasAttribute("data-navigation-open")) lenis.stop();
+      else lenis.start();
+    };
+    const navigation = new MutationObserver(syncNavigation);
+    navigation.observe(document.body, {
+      attributes: true,
+      attributeFilter: ["data-navigation-open"],
+    });
+    syncNavigation();
     lenis.on("scroll", ScrollTrigger.update);
     const tick = (time: number) => lenis.raf(time * 1000);
     gsap.ticker.add(tick);
@@ -174,6 +186,7 @@ export function mountMotion() {
       context.revert();
       registered.forEach((el) => delete el.dataset.scrollReveal);
       gsap.ticker.remove(tick);
+      navigation.disconnect();
       lenis.destroy();
     };
   });

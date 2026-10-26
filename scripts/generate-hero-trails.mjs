@@ -76,4 +76,24 @@ await writeFile(
   new URL("../src/components/visuals/hero-trail-paths.json", import.meta.url),
   JSON.stringify(trails),
 );
-console.log("Baked 40 original hero trails and mirrored pulse paths.");
+// Static linework is a cacheable image, rather than geometry duplicated in
+// the HTML and client JavaScript. Only the animated paths need DOM elements.
+await writeFile(
+  new URL("../src/components/visuals/hero-pulse-paths.json", import.meta.url),
+  JSON.stringify(
+    trails
+      .filter((trail) => trail.left)
+      .map(({ width, left, right }) => ({ width, left, right })),
+  ),
+);
+await writeFile(
+  new URL("../public/images/hero-ribbon-base.svg", import.meta.url),
+  `<svg xmlns="http://www.w3.org/2000/svg" viewBox="-1000 -500 3000 2000" fill="none">${trails.map((trail, index) => `<path d="${trail.d}" stroke="${index % 5 === 0 ? "#979797" : "#b8b8b8"}" stroke-width="${trail.width}" opacity="${index % 5 === 0 ? 0.3 : 0.14}"/>`).join("")}</svg>`,
+);
+await writeFile(
+  new URL("../public/images/hero-ribbon-underlay.svg", import.meta.url),
+  `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 700" fill="none">${Array.from({ length: 24 }, (_, i) => `<path d="M -100 ${-80 + i * 9} C 250 ${50 + i * 8}, 400 ${640 - i * 6}, 600 390 S 1000 ${120 + i * 5}, 1300 ${i * 10 - 30}" stroke="${i % 4 === 0 ? "#afafaf" : "#c6c6c6"}" stroke-opacity=".14" stroke-width="${i % 4 === 0 ? 2 : 1}"/>`).join("")}</svg>`,
+);
+console.log(
+  "Baked 40 original hero trails, static artwork and 16 mirrored pulse paths.",
+);

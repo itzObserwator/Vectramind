@@ -200,14 +200,38 @@ try {
   await expect(
     fallback.locator("#global-reach .reach-globe-fallback"),
   ).toBeVisible();
-  await expect(
-    fallback.getByRole("tab", { name: /Dubai/ }),
-  ).toBeVisible();
+  await expect(fallback.getByRole("tab", { name: /Dubai/ })).toBeVisible();
   await fallback.getByRole("tab", { name: /Vancouver/ }).click();
   await expect(
     fallback.locator("#global-reach").getByRole("tabpanel"),
   ).toContainText("Canada");
   await fallback.close();
+  // Mobile browsers can disable hardware rendering while the network still
+  // works. Do not log a Three.js constructor error or duplicate the fallback.
+  const unavailable = await browser.newPage({
+    viewport: { width: 390, height: 844 },
+  });
+  const unavailableErrors = [];
+  unavailable.on("pageerror", (error) => unavailableErrors.push(error.message));
+  unavailable.on("console", (message) => {
+    if (message.type() === "error") unavailableErrors.push(message.text());
+  });
+  await unavailable.addInitScript(() => {
+    const original = HTMLCanvasElement.prototype.getContext;
+    HTMLCanvasElement.prototype.getContext = function (type, ...args) {
+      return /webgl/i.test(type) ? null : original.call(this, type, ...args);
+    };
+  });
+  await unavailable.goto(url, { waitUntil: "networkidle" });
+  await unavailable.locator("#global-reach").scrollIntoViewIfNeeded();
+  await expect(unavailable.locator(".reach-globe-unavailable")).toBeVisible();
+  await expect(unavailable.locator(".reach-globe-fallback")).toHaveCount(1);
+  await unavailable.getByRole("tab", { name: /Vancouver/ }).click();
+  await expect(
+    unavailable.locator("#global-reach").getByRole("tabpanel"),
+  ).toContainText("Canada");
+  expect(unavailableErrors).toEqual([]);
+  await unavailable.close();
   expect(errors).toEqual([]);
   console.log(
     "Passed: grouped layout, 5 centered office selections, tab keyboard controls, previous/next wrapping, country details, 44px targets, 320–2560px layouts, 30Hz/pixel budget, zero idle/offscreen draws, reduced motion and fallback.",

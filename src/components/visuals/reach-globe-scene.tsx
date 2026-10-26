@@ -57,17 +57,33 @@ export default function ReachGlobeScene({
     const container = host.current;
     if (!container) return;
     let renderer: WebGLRenderer;
+    const canvas = document.createElement("canvas");
+    const attributes: WebGLContextAttributes = {
+      alpha: true,
+      antialias: true,
+      powerPreference: "low-power",
+    };
+    const unavailable = () => {
+      setFailed(true);
+      props.current.onReady();
+    };
     try {
+      // A phone may disable WebGL to conserve resources. Check before Three's
+      // constructor, which logs an error before throwing on unsupported GPUs.
+      const context = canvas.getContext("webgl2", attributes);
+      if (!context) {
+        unavailable();
+        return;
+      }
       renderer = new WebGLRenderer({
-        alpha: true,
-        antialias: true,
-        powerPreference: "low-power",
+        canvas,
+        context,
+        ...attributes,
       });
     } catch {
-      setFailed(true);
+      unavailable();
       return;
     }
-    const canvas = renderer.domElement;
     canvas.style.cssText = "display:block;width:100%;height:100%";
     container.append(canvas);
     const scene = new Scene();
@@ -248,7 +264,12 @@ export default function ReachGlobeScene({
   }, [data, labels]);
   useEffect(() => wake.current(), [visible, still, selectedOffice]);
   return failed ? (
-    fallback
+    <div
+      className="reach-globe-unavailable"
+      style={{ position: "absolute", inset: 0 }}
+    >
+      {fallback}
+    </div>
   ) : (
     <div ref={host} style={{ position: "absolute", inset: 0 }} />
   );

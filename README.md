@@ -106,6 +106,8 @@ Dependency versions were resolved from npm's `latest` tags on October 16, 2026 a
 
 The current hero uses SVG light trails with CSS pulses in the four original logo colours. `scripts/generate-hero-trails.mjs` bakes the original 3D camera and curves into compact vector coordinates. Run `npm run generate:hero` after editing those curves. No WebGL context or Three.js download is needed for the hero. Pulses pause offscreen, in hidden tabs and for reduced motion.
 
+Static hero linework is generated into `public/images/hero-ribbon-base.svg` and `hero-ribbon-underlay.svg`. Only the sixteen animated pulses remain as inline paths, using the smaller `hero-pulse-paths.json` client import. This preserves the original geometry while avoiding duplicated static paths in the HTML and JavaScript. The mobile menu uses native nested scrolling and pauses the homepage smooth-scroll engine while open; keyboard focus, Escape, route changes and desktop resizing clean up its scroll lock. Run `npm run test:mobile-report` for phone, tablet and landscape navigation checks. The globe checks for a usable WebGL2 context before constructing Three's renderer, so phones without hardware rendering receive one fallback illustration with working office controls; `npm run test:reach` covers this case alongside the normal rendering path.
+
 Run a repeatable Lighthouse audit with one command:
 
 ```sh
