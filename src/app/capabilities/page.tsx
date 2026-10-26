@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { CapabilitiesPage } from "@/components/pages/company-pages";
+import { CapabilitiesPage } from "@/components/pages/capabilities-page";
 export const metadata: Metadata = {
   title:
     "Capabilities \u2014 Intelligence, Design & Integration \u2014 Vectramind",

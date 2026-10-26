@@ -11,7 +11,10 @@ try {
   });
   const track = page.locator(".reference-capabilities");
   await expect(track.locator("canvas")).toHaveCount(0);
-  await expect(track.locator(".capability-visual-stage")).toHaveCount(0);
+  // On the landing page the showcase starts far below the fold. The dedicated
+  // capabilities route places it close enough to preload its SVG immediately.
+  if (new URL(page.url()).pathname === "/")
+    await expect(track.locator(".capability-visual-stage")).toHaveCount(0);
   await track.scrollIntoViewIfNeeded();
   await expect(track.locator(".capability-visual-stage")).toHaveCount(3);
   await expect(
@@ -455,9 +458,15 @@ try {
     .getByRole("button", { name: "Previous capability", exact: true })
     .click();
   await expect(track.locator("h3")).toHaveText(titles[0]);
-  await expect(
-    track.getByRole("link", { name: "Explore the possibilities" }),
-  ).toHaveAttribute("href", /^\/capabilities\/?$/);
+  if (new URL(page.url()).pathname.startsWith("/capabilities")) {
+    await expect(
+      track.getByRole("link", { name: "Explore our expertise" }),
+    ).toHaveAttribute("href", "#capability-services");
+  } else {
+    await expect(
+      track.getByRole("link", { name: "Explore the possibilities" }),
+    ).toHaveAttribute("href", /^\/capabilities\/?$/);
+  }
   for (const width of [2560, 1440, 1024, 768, 390, 320]) {
     await page.setViewportSize({ width, height: width < 800 ? 844 : 1000 });
     await page.waitForTimeout(400);

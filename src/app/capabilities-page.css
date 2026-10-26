@@ -1,0 +1,200 @@
+/* The capabilities route shares the landing page's components and surfaces. */
+.capabilities-page .capabilities-hero {
+  min-height: 690px;
+}
+.capabilities-jump {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding-block: 28px;
+  background: #fafafa;
+}
+.capabilities-jump a {
+  display: inline-flex;
+  align-items: center;
+  gap: 20px;
+  min-height: 44px;
+  padding: 11px 22px;
+  border: 1px solid #d2d6dc;
+  border-radius: 99px;
+  background: #fff;
+  color: #3c4148;
+  font-size: 12px;
+  transition:
+    background 0.2s,
+    border-color 0.2s;
+}
+.capabilities-jump a > span {
+  font-size: 10px;
+  color: #62656b;
+}
+.capabilities-jump a:hover {
+  background: #f0f0f2;
+  border-color: #929aa7;
+}
+.capabilities-page .experience-padding {
+  padding-inline: var(--page-gutter);
+}
+.capabilities-page .reference-capabilities .experience-capability-text,
+.capabilities-page .reference-capabilities .experience-kicker,
+.capabilities-page .capability-navigation > span {
+  color: #62656b;
+}
+.capabilities-page :is(#capability-services, .capabilities-service) {
+  scroll-margin-top: 95px;
+}
+.capabilities-services {
+  padding-block: 75px;
+  background: #f0f0f2;
+}
+.capabilities-service-list {
+  margin-top: 55px;
+}
+.capabilities-service {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: 70px;
+  padding-block: 45px 55px;
+  border-top: 1px solid #d1d5dc;
+}
+.capabilities-service:last-child {
+  padding-bottom: 0;
+}
+.capabilities-service-heading > .eyebrow {
+  display: block;
+  color: #62656b;
+  font-size: 10px;
+  line-height: 1.7;
+}
+.capabilities-service h3 {
+  margin: 25px 0 28px;
+  max-width: 520px;
+  font-size: clamp(32px, 3.4vw, 50px);
+}
+.capabilities-service .button {
+  min-height: 44px;
+  padding: 12px 21px;
+  font-size: 12px;
+}
+.capabilities-service-content > p {
+  margin: 0 0 25px;
+  color: #62656b;
+  max-width: 520px;
+  font-size: 14px;
+  line-height: 1.85;
+}
+.capabilities-service ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.capabilities-service li {
+  display: grid;
+  grid-template-columns: 30px 1fr;
+  align-items: baseline;
+  gap: 12px;
+  padding: 15px 0;
+  border-top: 1px solid #d5d9df;
+  font-size: 13px;
+  line-height: 1.7;
+}
+.capabilities-service li > span:first-child {
+  color: #62656b;
+  font-size: 10px;
+}
+.capabilities-page .platforms-flow {
+  height: auto;
+}
+.capabilities-page .platforms-flow .platforms-sticky {
+  position: relative;
+  height: auto;
+  min-height: 0;
+  padding: 65px var(--page-gutter) 75px;
+  overflow: visible;
+  display: block;
+  background: #fafafa;
+}
+.capabilities-page .platforms-section-label {
+  position: static;
+  translate: none;
+  width: 100%;
+  max-width: none;
+  padding-top: 16px;
+  border-top: 1px solid #dedfe2;
+  color: #62656b;
+}
+.capabilities-page .platforms-grid {
+  width: 100%;
+  margin-top: 42px;
+  gap: clamp(30px, 4vw, 62px);
+}
+.capabilities-page .platform-image-link {
+  max-height: none;
+  aspect-ratio: 1.5;
+  will-change: auto;
+}
+.capabilities-page .platform-card h3 {
+  font-size: clamp(25px, 2.4vw, 36px);
+  line-height: 1.2;
+  margin-block: 18px;
+}
+.capabilities-page .platform-card-description {
+  color: #62656b;
+  font-size: 13px;
+  line-height: 1.85;
+}
+.capabilities-page .platform-card-cta {
+  min-height: 44px;
+  color: #3c4148;
+  border-color: #cbd0d7;
+  background: #fff;
+}
+@media (max-width: 900px) {
+  .capabilities-service {
+    gap: 35px;
+  }
+}
+@media (max-width: 600px) {
+  .capabilities-page .capabilities-hero {
+    min-height: 610px;
+  }
+  .capabilities-jump {
+    gap: 8px;
+    padding-block: 22px;
+  }
+  .capabilities-jump a {
+    font-size: 11px;
+    gap: 9px;
+    padding-inline: 14px;
+  }
+  .capabilities-services {
+    padding-block: 48px;
+  }
+  .capabilities-service-list {
+    margin-top: 35px;
+  }
+  .capabilities-service {
+    grid-template-columns: 1fr;
+    gap: 25px;
+    padding-block: 32px 38px;
+  }
+  .capabilities-service h3 {
+    font-size: 34px;
+    margin-block: 20px 24px;
+  }
+  .capabilities-service-content > p {
+    font-size: 13px;
+  }
+  .capabilities-page .platforms-flow .platforms-sticky {
+    padding-block: 45px 55px;
+  }
+  .capabilities-page .platforms-grid {
+    grid-template-columns: 1fr;
+    gap: 40px;
+    margin-top: 30px;
+  }
+  .capabilities-page .platform-card h3 {
+    font-size: 27px;
+  }
+}

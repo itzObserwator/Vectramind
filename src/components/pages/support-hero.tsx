@@ -1,0 +1,38 @@
+import Link from "next/link";
+import { HeroEnergy } from "@/components/visuals/hero-energy";
+
+export function SupportHero() {
+  return (
+    <section
+      id="top"
+      className="inner-hero experience-hero product-landing-hero support-hero"
+      aria-labelledby="support-title"
+    >
+      <HeroEnergy />
+      <div className="product-landing-hero-content">
+        <span className="eyebrow">Vectramind support</span>
+        <h1 id="support-title" className="display">
+          Here to help.
+          <br />
+          With you.
+        </h1>
+        <p>
+          Find answers, explore your platform and connect with the people who
+          can help you move forward.
+        </p>
+        <div className="product-landing-actions">
+          <Link href="#support-answers" className="button button-primary">
+            Find an answer
+          </Link>
+          <Link href="#support-request" className="button hero-platform-button">
+            Contact support
+          </Link>
+        </div>
+      </div>
+      <div className="product-landing-hero-caption" aria-hidden="true">
+        <span>Human. Helpful. Connected.</span>
+        <span>With you in mind.</span>
+      </div>
+    </section>
+  );
+}

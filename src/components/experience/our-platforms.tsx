@@ -8,10 +8,12 @@ import { PlatformPreview } from "./platform-preview";
 
 import { useNearViewport } from "@/components/use-near-viewport";
 
-export function OurPlatforms() {
+export function OurPlatforms({
+  presentation = "scroll",
+}: { presentation?: "scroll" | "flow" } = {}) {
   const root = useRef<HTMLElement>(null);
   const ready = useNearViewport(root);
-  useDeferredAnimation(ready, () =>
+  useDeferredAnimation(ready && presentation === "scroll", () =>
     import("./our-platforms-animation").then(
       ({ mount }) =>
         () =>
@@ -22,7 +24,7 @@ export function OurPlatforms() {
   return (
     <section
       id="products"
-      className="experience-work reference-platforms"
+      className={`experience-work reference-platforms${presentation === "flow" ? " platforms-flow" : ""}`}
       ref={root}
       aria-labelledby="platforms-title"
     >
@@ -40,6 +42,7 @@ export function OurPlatforms() {
               <Link
                 href={platform.href}
                 className={`platform-image-link work-${platform.slug}`}
+                data-reveal={presentation === "flow" ? "" : undefined}
               >
                 <span className="sr-only">Explore {platform.name}</span>
                 <PlatformPreview platform={platform.slug} />

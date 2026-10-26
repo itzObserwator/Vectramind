@@ -98,7 +98,7 @@ try {
   await page.emulateMedia({ reducedMotion: "no-preference" });
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto(`${base}/about/`, { waitUntil: "networkidle" });
-  const heading = page.locator(".inner-intro h2").first();
+  const heading = page.locator("#about-story-title");
   await heading.scrollIntoViewIfNeeded();
   await expect(heading).toHaveAttribute("data-scroll-reveal", "complete");
   expect(

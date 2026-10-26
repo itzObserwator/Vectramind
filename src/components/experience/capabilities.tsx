@@ -11,7 +11,10 @@ import Link from "next/link";
 import { useNearViewport } from "@/components/use-near-viewport";
 
 const CapabilityCopy = dynamic(() => import("./capability-copy"));
-export function ExperienceCapabilities() {
+export function ExperienceCapabilities({
+  exploreHref = "/capabilities",
+  exploreLabel = "Explore the possibilities",
+}: { exploreHref?: string; exploreLabel?: string } = {}) {
   const root = useRef<HTMLElement>(null);
   const [active, setActive] = useState(0);
   const ready = useNearViewport(root);
@@ -122,8 +125,8 @@ export function ExperienceCapabilities() {
             <div className="capability-atmosphere" aria-hidden="true" />
           </div>
         </div>
-        <Link className="text-link capability-explore" href="/capabilities">
-          Explore the possibilities <Arrow />
+        <Link className="text-link capability-explore" href={exploreHref}>
+          {exploreLabel} <Arrow />
         </Link>
       </div>
     </section>

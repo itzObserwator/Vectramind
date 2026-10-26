@@ -1,7 +1,7 @@
 // Inner-page content only. The landing page retains its own animation sequence.
 const text = "h1,h2,h3,h4,h5,h6,p,blockquote,figcaption,summary,strong,small";
 const visuals =
-  ".inner-hero-art,.expertise-photo,.founder-image,.career-photo,.article-cover,.people-image,.insight-image,.prose-document img,.prose-document table";
+  ".inner-hero-art,.platform-image-link,.expertise-photo,.founder-image,.career-photo,.article-cover,.people-image,.insight-image,.prose-document img,.prose-document table";
 export const innerRevealTargets = [
   text,
   visuals,

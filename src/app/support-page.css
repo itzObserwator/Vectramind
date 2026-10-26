@@ -1,0 +1,351 @@
+/* Shared landing components, with clear paths into product help and enquiry. */
+.support-page .support-hero {
+  min-height: 650px;
+}
+.support-page :is(#support-answers, #support-request) {
+  scroll-margin-top: 95px;
+}
+.support-start,
+.support-faq,
+.support-request {
+  padding-block: 75px;
+}
+.support-help-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+}
+.support-help-grid article {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 32px;
+  border: 1px solid #d7dbe1;
+  border-radius: 14px;
+  background: #fff;
+  min-width: 0;
+}
+.support-help-grid article > img {
+  width: auto;
+  max-width: 170px;
+  height: 34px;
+  object-fit: contain;
+  object-position: left;
+}
+.support-team-brand {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  height: 34px;
+  font:
+    400 23px/1.2 Space,
+    Inter,
+    sans-serif;
+  letter-spacing: -0.04em;
+}
+.support-help-grid h3 {
+  margin: 32px 0 16px;
+  font:
+    400 clamp(23px, 2vw, 29px)/1.2 Space,
+    Inter,
+    sans-serif;
+  letter-spacing: -0.04em;
+}
+.support-help-grid p {
+  margin: 0 0 28px;
+  font-size: 13px;
+  line-height: 1.85;
+  color: #62656b;
+}
+.support-help-grid .button {
+  margin-top: auto;
+  min-height: 44px;
+  padding: 12px 18px;
+  font-size: 12px;
+}
+.support-faq {
+  background: #f0f0f2;
+}
+.support-faq-layout,
+.support-request-layout {
+  display: grid;
+  grid-template-columns: 1fr 1.25fr;
+  gap: clamp(45px, 6vw, 90px);
+  margin-top: 40px;
+  align-items: start;
+}
+.support-page :is(.support-faq-intro, .support-request aside) > h2 {
+  margin: 0 0 25px;
+  font-size: clamp(36px, 4vw, 60px);
+}
+.support-page :is(.support-faq-intro, .support-request aside) > p {
+  max-width: 350px;
+  color: #62656b;
+  font-size: 14px;
+  line-height: 1.85;
+  margin: 0 0 25px;
+}
+.support-faq-intro .text-link {
+  min-height: 44px;
+  font-size: 12px;
+  color: #3c4148;
+}
+.support-answer-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 28px;
+}
+.support-answer-tabs button {
+  min-height: 44px;
+  padding: 11px 18px;
+  border: 1px solid #cbd0d7;
+  border-radius: 99px;
+  color: #3c4148;
+  background: #fff;
+  font-size: 12px;
+  cursor: pointer;
+}
+.support-answer-tabs button:hover {
+  border-color: #929aa7;
+}
+.support-answer-tabs button[aria-selected="true"] {
+  background: #292b30;
+  color: #fff;
+  border-color: #292b30;
+}
+.support-page .faq-search {
+  display: block;
+  margin-bottom: 18px;
+}
+.support-page .faq-search > span {
+  display: block;
+  color: #62656b;
+  margin-bottom: 12px;
+  font-size: 10px;
+}
+.support-page .faq-search input {
+  width: 100%;
+  min-height: 52px;
+  border-radius: 12px;
+  padding: 14px 18px;
+  font-size: 13px;
+}
+.support-page .faq-result-count {
+  margin: 0 0 22px;
+  color: #62656b;
+  font-size: 12px;
+  line-height: 1.7;
+}
+.support-page .faq-list summary {
+  font-size: 14px;
+  line-height: 1.7;
+  padding-block: 23px;
+}
+.support-page .faq-list summary .eyebrow {
+  color: #62656b;
+}
+.support-page .faq-list details > p,
+.support-page .empty-results {
+  color: #62656b;
+  font-size: 13px;
+  line-height: 1.85;
+}
+.support-request-layout {
+  grid-template-columns: 1fr 1.25fr;
+}
+.support-page .contact-email {
+  display: inline-flex;
+  font-size: 16px;
+  color: #292b30;
+  margin-bottom: 30px;
+  word-break: break-word;
+  min-height: 44px;
+  align-items: center;
+}
+.support-request-steps {
+  list-style: none;
+  padding: 0;
+  margin: 10px 0 0;
+  max-width: 360px;
+}
+.support-request-steps li {
+  display: grid;
+  grid-template-columns: 26px 1fr;
+  gap: 16px;
+  padding-block: 22px;
+  border-top: 1px solid #d7dbe1;
+}
+.support-request-steps li > span {
+  font-size: 10px;
+  color: #62656b;
+  padding-top: 3px;
+}
+.support-request-steps h3 {
+  font-size: 15px;
+  font-weight: 400;
+  margin: 0 0 9px;
+}
+.support-request-steps p {
+  color: #62656b;
+  font-size: 12px;
+  line-height: 1.8;
+  margin: 0;
+}
+.support-page .request-form-wrap {
+  padding: 32px;
+  background: #f0f0f2;
+  border: 1px solid #d7dbe1;
+  border-radius: 14px;
+  min-width: 0;
+}
+.support-page .request-form {
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: none;
+  box-shadow: none;
+}
+.support-page .form-heading {
+  margin-bottom: 28px;
+}
+.support-page .form-heading > span {
+  font-size: 10px;
+  color: #62656b;
+}
+.support-page .form-heading h2 {
+  font:
+    400 clamp(27px, 2.6vw, 38px)/1.15 Space,
+    Inter,
+    sans-serif;
+  letter-spacing: -0.04em;
+  margin: 18px 0 0;
+}
+.support-page .form-fields {
+  gap: 22px 18px;
+}
+.support-page .form-fields label {
+  font-size: 12px;
+}
+.support-page .form-fields :is(input, select, textarea) {
+  min-height: 48px;
+  font-size: 13px;
+  border-radius: 8px;
+  border: 1px solid #cbd0d7;
+  background: #fff;
+  color: #292b30;
+}
+.support-page .form-consent {
+  color: #62656b;
+  font-size: 11px;
+  line-height: 1.8;
+}
+.support-page :is(.form-note, .email-draft > p) {
+  color: #62656b;
+  font-size: 12px;
+  line-height: 1.8;
+}
+.support-page .email-draft {
+  padding: 0;
+  background: none;
+  border: 0;
+}
+.support-page .email-draft h3 {
+  font:
+    400 32px/1.15 Space,
+    Inter,
+    sans-serif;
+  letter-spacing: -0.04em;
+}
+.support-page .email-draft pre {
+  font-size: 12px;
+  line-height: 1.85;
+  border-radius: 8px;
+  background: #fff;
+  color: #3c4148;
+  overflow-wrap: anywhere;
+}
+@media (max-width: 900px) {
+  .support-help-grid {
+    gap: 16px;
+  }
+  .support-help-grid article {
+    padding: 24px;
+  }
+  .support-faq-layout,
+  .support-request-layout {
+    grid-template-columns: 1fr;
+    gap: 35px;
+  }
+  .support-page :is(.support-faq-intro, .support-request aside) > p {
+    max-width: 520px;
+  }
+  .support-request-steps {
+    max-width: none;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 24px;
+  }
+}
+@media (max-width: 600px) {
+  .support-page .support-hero {
+    min-height: 600px;
+  }
+  .support-start,
+  .support-faq,
+  .support-request {
+    padding-block: 48px;
+  }
+  .support-help-grid {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+  .support-help-grid article {
+    padding: 28px;
+  }
+  .support-help-grid h3 {
+    font-size: 27px;
+    margin-top: 26px;
+  }
+  .support-faq-layout,
+  .support-request-layout {
+    margin-top: 28px;
+    gap: 30px;
+  }
+  .support-answer-tabs {
+    gap: 7px;
+    margin-bottom: 24px;
+  }
+  .support-answer-tabs button {
+    font-size: 11px;
+    padding-inline: 14px;
+  }
+  .support-page .faq-list summary {
+    font-size: 13px;
+  }
+  .support-page .faq-list details > p {
+    padding-left: 0;
+  }
+  .support-page .contact-email {
+    font-size: 15px;
+  }
+  .support-request-steps {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+  .support-page .request-form-wrap {
+    padding: 24px 20px;
+  }
+  .support-page .form-fields {
+    grid-template-columns: 1fr;
+  }
+  .support-page .form-heading h2 {
+    font-size: 29px;
+  }
+  .support-page .form-fields :is(input, select, textarea) {
+    font-size: 16px;
+  }
+  .support-page .draft-actions {
+    flex-wrap: wrap;
+  }
+}

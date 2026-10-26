@@ -68,8 +68,8 @@ export function CaseStudies() {
           <div key={active} className="case-story-content">
             <h3>{cases[active].title}</h3>
             <p>{cases[active].text}</p>
-            <Link href="/synapse" className="text-link">
-              Read the Synapse stories
+            <Link href="/contact?topic=synapse" className="text-link">
+              Discuss your use case
               <Arrow />
             </Link>
           </div>

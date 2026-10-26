@@ -3,9 +3,11 @@ import { useState } from "react";
 export function FaqList({
   items,
   searchable = false,
+  showResultCount = false,
 }: {
   items: readonly (readonly [string, string])[];
   searchable?: boolean;
+  showResultCount?: boolean;
 }) {
   const [query, setQuery] = useState("");
   const filtered = items.filter((item) =>
@@ -23,6 +25,12 @@ export function FaqList({
             onChange={(e) => setQuery(e.target.value)}
           />
         </label>
+      )}
+      {showResultCount && (
+        <p className="faq-result-count" role="status">
+          {filtered.length} {filtered.length === 1 ? "answer" : "answers"}
+          {query ? " matching your search" : " to explore"}
+        </p>
       )}
       <div aria-live="polite">
         {filtered.length === 0 && (

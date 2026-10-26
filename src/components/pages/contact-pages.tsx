@@ -3,8 +3,7 @@ import Link from "next/link";
 import { useEffect, useState, type FormEvent } from "react";
 import { Arrow, Mark, SectionLabel } from "@/components/site-primitives";
 import { Button } from "@/components/ui/button";
-import { PageHero, FaqList } from "./page-primitives";
-import { products } from "@/content/products";
+import { PageHero } from "./page-primitives";
 import { offices } from "@/content/site";
 
 export function RequestForm({ support = false }: { support?: boolean }) {
@@ -17,17 +16,20 @@ export function RequestForm({ support = false }: { support?: boolean }) {
     const incoming = new URLSearchParams(window.location.search).get("topic");
     if (
       incoming &&
-      [
-        "synapse",
-        "firstpass",
-        "careers",
-        "artificial-intelligence",
-        "solution-design",
-        "integration-services",
-      ].includes(incoming)
+      (support
+        ? ["support", "synapse", "firstpass", "integration-services"]
+        : [
+            "synapse",
+            "firstpass",
+            "careers",
+            "artificial-intelligence",
+            "solution-design",
+            "integration-services",
+          ]
+      ).includes(incoming)
     )
       setTopic(incoming);
-  }, []);
+  }, [support]);
   function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -130,26 +132,39 @@ export function RequestForm({ support = false }: { support?: boolean }) {
               />
             </label>
             <label>
-              I’m interested in <span>*</span>
+              {support ? "I need help with" : "I’m interested in"}{" "}
+              <span>*</span>
               <select
                 name="topic"
                 value={topic}
                 onChange={(e) => setTopic(e.target.value)}
               >
-                <option value="general">A conversation with Vectramind</option>
-                <option value="synapse">Synapse demo</option>
-                <option value="firstpass">Firstpass demo</option>
-                <option value="artificial-intelligence">
-                  Artificial intelligence
+                {!support && (
+                  <option value="general">
+                    A conversation with Vectramind
+                  </option>
+                )}
+                <option value="synapse">
+                  {support ? "Synapse support" : "Synapse demo"}
                 </option>
-                <option value="solution-design">
-                  Solution design & development
+                <option value="firstpass">
+                  {support ? "Firstpass support" : "Firstpass demo"}
                 </option>
+                {!support && (
+                  <>
+                    <option value="artificial-intelligence">
+                      Artificial intelligence
+                    </option>
+                    <option value="solution-design">
+                      Solution design & development
+                    </option>
+                  </>
+                )}
                 <option value="integration-services">
-                  Integration services
+                  {support ? "Integration support" : "Integration services"}
                 </option>
                 <option value="support">Product support</option>
-                <option value="careers">Careers</option>
+                {!support && <option value="careers">Careers</option>}
               </select>
             </label>
             <label className="form-full">
@@ -254,98 +269,6 @@ export function ContactPage() {
             </a>
           ))}
         </div>
-      </section>
-    </div>
-  );
-}
-const supportFaqs = [
-  ...products.synapse.faqs,
-  ...products.firstpass.faqs,
-  [
-    "How do I contact the support team?",
-    "Email support@vectramind.com or prepare an enquiry using the form below. Include your product, organization, a description of the issue and any relevant steps to reproduce it.",
-  ],
-  [
-    "What should I include in my support request?",
-    "Include the platform you use, a brief description of the issue, when it occurred, and the steps leading up to it. Avoid including patient records, passwords or other sensitive details.",
-  ],
-] as const;
-export function SupportPage() {
-  return (
-    <div className="inner-page">
-      <PageHero
-        eyebrow="Vectramind support"
-        title={["Need help?", "We’re with you."]}
-        description="Find answers, explore your platform, and connect with the people who can help you move forward."
-        cta="Contact support"
-        href="#support-request"
-      >
-        <div className="support-art">
-          <div className="support-ring" />
-          <Mark />
-          <span className="display">
-            Human.
-            <br />
-            Helpful.
-            <br />
-            <span>Connected.</span>
-          </span>
-        </div>
-      </PageHero>
-      <section className="support-quick-links page-padding">
-        {[
-          [
-            "Synapse",
-            "Customer engagement, messaging & integrations",
-            "/synapse",
-          ],
-          [
-            "Firstpass",
-            "Patient experience, flow & facility insights",
-            "/firstpass",
-          ],
-          [
-            "Our team",
-            "Talk through your question with us",
-            "#support-request",
-          ],
-        ].map(([title, text, href]) => (
-          <Link key={title} href={href}>
-            <span className="eyebrow">Explore</span>
-            <h2>{title}</h2>
-            <p>{text}</p>
-            <Arrow />
-          </Link>
-        ))}
-      </section>
-      <section className="inner-section page-padding">
-        <SectionLabel>A little more clarity</SectionLabel>
-        <div className="faq-layout">
-          <h2 className="display inner-section-title" data-reveal>
-            Answers that
-            <br />
-            move you forward.
-          </h2>
-          <FaqList items={supportFaqs} searchable />
-        </div>
-      </section>
-      <section
-        id="support-request"
-        className="contact-layout page-padding inner-panel"
-      >
-        <aside>
-          <span className="eyebrow">Expert help, human connection</span>
-          <h2>Tell us what’s happening.</h2>
-          <p>
-            Help our team understand your question so we can point you in the
-            right direction.
-          </p>
-          <a className="contact-email" href="mailto:support@vectramind.com">
-            support@vectramind.com
-            <Arrow />
-          </a>
-        </aside>
-        <RequestForm support />
       </section>
     </div>
   );

@@ -6,7 +6,10 @@ import { HugeiconsIcon } from "@hugeicons/react";
 import { ArrowRight01Icon } from "@hugeicons/core-free-icons";
 
 import { SectionLabel } from "@/components/site-primitives";
-export function People() {
+export function People({
+  includeFounder = true,
+  sectionIndex = "07",
+}: { includeFounder?: boolean; sectionIndex?: string } = {}) {
   const [slide, setSlide] = useState(0);
   const ref = useRef<HTMLDivElement>(null);
   const images = [
@@ -32,10 +35,32 @@ export function People() {
       label: "Curious minds. Shared purpose.",
       caption: "Life at Vectramind",
     },
-  ];
+  ].filter((_, index) => includeFounder || index !== 0);
+  function selectPhoto(index: number) {
+    const next = Math.max(0, Math.min(images.length - 1, index));
+    const slider = ref.current;
+    const photo = slider?.children[next];
+    if (!slider || !photo) return;
+    let left =
+      slider.scrollLeft +
+      photo.getBoundingClientRect().left -
+      slider.getBoundingClientRect().left;
+    // Several desktop photos can be visible together. If a requested photo
+    // would clamp at the current edge, move back through the visible group.
+    const maximum = slider.scrollWidth - slider.clientWidth;
+    if (next < slide && Math.min(left, maximum) >= slider.scrollLeft - 2)
+      left = Math.max(0, slider.scrollLeft - slider.clientWidth * 0.8);
+    setSlide(next);
+    slider.scrollTo({
+      left,
+      behavior: matchMedia("(prefers-reduced-motion: reduce)").matches
+        ? "instant"
+        : "smooth",
+    });
+  }
   return (
     <section className="people page-padding section-space">
-      <SectionLabel right="07 / The minds behind the momentum">
+      <SectionLabel right={`${sectionIndex} / The minds behind the momentum`}>
         Meet Vectramind
       </SectionLabel>
       <div className="people-heading">
@@ -47,15 +72,7 @@ export function People() {
         <div className="slider-controls">
           <button
             aria-label="Previous team photo"
-            onClick={() => {
-              const next = Math.max(0, slide - 1);
-              setSlide(next);
-              ref.current?.children[next].scrollIntoView({
-                behavior: "smooth",
-                block: "nearest",
-                inline: "start",
-              });
-            }}
+            onClick={() => selectPhoto(slide - 1)}
             disabled={slide === 0}
           >
             <HugeiconsIcon
@@ -66,15 +83,7 @@ export function People() {
           </button>
           <button
             aria-label="Next team photo"
-            onClick={() => {
-              const next = Math.min(images.length - 1, slide + 1);
-              setSlide(next);
-              ref.current?.children[next].scrollIntoView({
-                behavior: "smooth",
-                block: "nearest",
-                inline: "start",
-              });
-            }}
+            onClick={() => selectPhoto(slide + 1)}
             disabled={slide === images.length - 1}
           >
             <HugeiconsIcon icon={ArrowRight01Icon} size={22} />
@@ -87,6 +96,39 @@ export function People() {
         role="region"
         aria-label="Vectramind team photos"
         tabIndex={0}
+        onScroll={(event) => {
+          const slider = event.currentTarget;
+          if (
+            slider.scrollLeft + slider.clientWidth >=
+            slider.scrollWidth - 2
+          ) {
+            setSlide(images.length - 1);
+            return;
+          }
+          const left = slider.getBoundingClientRect().left;
+          const closest = Array.from(slider.children).reduce(
+            (best, photo, index, photos) =>
+              Math.abs(photo.getBoundingClientRect().left - left) <
+              Math.abs(photos[best].getBoundingClientRect().left - left)
+                ? index
+                : best,
+            0,
+          );
+          setSlide(closest);
+        }}
+        onKeyDown={(event) => {
+          if (event.target !== event.currentTarget) return;
+          if (["ArrowLeft", "ArrowRight", "Home", "End"].includes(event.key)) {
+            event.preventDefault();
+            selectPhoto(
+              event.key === "Home"
+                ? 0
+                : event.key === "End"
+                  ? images.length - 1
+                  : slide + (event.key === "ArrowRight" ? 1 : -1),
+            );
+          }
+        }}
       >
         {images.map((item) => (
           <figure

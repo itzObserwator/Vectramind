@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { Menu01Icon, Cancel01Icon } from "@hugeicons/core-free-icons";
@@ -15,6 +15,19 @@ const navigation = [
 ];
 export function Header() {
   const pathname = usePathname();
+  const router = useRouter();
+  const prefetchProduct = (href: string) => {
+    if (
+      [
+        "/synapse",
+        "/firstpass",
+        "/capabilities",
+        "/about",
+        "/support",
+      ].includes(href)
+    )
+      router.prefetch(`${href}/`);
+  };
   const [menu, setMenu] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const header = useRef<HTMLElement>(null);
@@ -29,6 +42,13 @@ export function Header() {
   }, []);
   useEffect(() => {
     if (!menu) return;
+    // Mobile links are hidden until the menu opens. Warm product pages before
+    // the tap, instead of waiting for the link's viewport-prefetch scheduler.
+    router.prefetch("/synapse/");
+    router.prefetch("/firstpass/");
+    router.prefetch("/capabilities/");
+    router.prefetch("/about/");
+    router.prefetch("/support/");
     const htmlOverflow = document.documentElement.style.overflow;
     const bodyOverflow = document.body.style.overflow;
     const nativeScroll = document.body.getAttribute("data-lenis-prevent");
@@ -80,7 +100,7 @@ export function Header() {
       document.removeEventListener("keydown", keyboard);
       desktop.removeEventListener("change", resized);
     };
-  }, [menu]);
+  }, [menu, router]);
   return (
     <header
       ref={header}
@@ -100,6 +120,8 @@ export function Header() {
           <Link
             key={href}
             href={href}
+            onPointerEnter={() => prefetchProduct(href)}
+            onFocus={() => prefetchProduct(href)}
             aria-current={
               pathname === href || pathname === href + "/" ? "page" : undefined
             }
@@ -142,6 +164,8 @@ export function Header() {
             <Link
               key={href}
               href={href}
+              onPointerEnter={() => prefetchProduct(href)}
+              onFocus={() => prefetchProduct(href)}
               onClick={() => setMenu(false)}
               aria-current={pathname === href ? "page" : undefined}
             >

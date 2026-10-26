@@ -184,7 +184,7 @@ await expect(mobile).toHaveURL(/\/firstpass\/?$/);
 await expect(
   mobile.getByRole("navigation", { name: "Mobile navigation" }),
 ).not.toBeVisible();
-await expect(mobile.locator("h1")).toContainText("Better journeys");
+await expect(mobile.locator("h1")).toHaveText("Your care.Connected.");
 expect(errors).toEqual([]);
 await browser.close();
 console.log(
